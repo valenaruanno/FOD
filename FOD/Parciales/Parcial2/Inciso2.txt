@@ -1,0 +1,52 @@
+2) Dado un arbol B de orden 4 y con politica izquierda.
+
+        2: 0 (10)1 (30) 4(60) 3
+0: (5) 1: (15)(20)(23) 4: (42)(48)  3: (70)
+------------------------------------------------------------------
++25
+                        7: 2 (30) 6
+    2: 0 (10) 1 (23) 5                   6: 4(60) 3
+ 0: (5)  1: (15)(20)  5:(25)        4: (42)(48)  3: (70)
+
+L2, L1, E1, E5, E2, E6, E7
+
+Al agregar el 25 se produce overflow en el nodo 0, por lo que 
+procedo a crear el nodo 5 con la segunda parte del nodo 1 y tengo
+que promocionar la menor clave de este nuevo nodo. Una vez 
+promocionada la misma me vuelve a generar overflow en el nodo 2 y
+resuelvo de la misma forma que hice antes, creo un nuvo nodo con 
+la segunda mitad del nodo y promociono la menor clave de la segunda
+mitad generando asi una nueva raiz.
+------------------------------------------------------------------
+-30
+                        7: 2 (42) 6
+    2: 0 (10) 1 (23) 5                 6: 4(60) 3
+ 0: (5)  1: (15)(20)  5:(25)        4:(48)  3: (70)
+
+ L7, L4, E4, E7
+
+Al eliminar el 30 que no se encuentra en una hoja, debo reemplazar 
+por la clave mas chica del subarbol derecho.
+------------------------------------------------------------------
+-5
+                    7: 2 (42) 6
+    2: 0 (15) 1 (23) 5              6: 4(60) 3
+ 0: (10)  1: (20)  5:(25)        4:(48)  3: (70)
+
+ L7, L2, L0, L1, L2, E0, E2
+
+ Al eliminar el 5 y no poder redistribuir ni fusionar con un 
+ hermano adyacente izquierdo, tengo que redistribuir con el nodo 2.
+------------------------------------------------------------------
+-48
+                    7: 2 (20) 1 (42) 6
+    2: 0 (15) (10)      1: (23) (25)       6: 4(60) 70 3     
+
+
+L7, L6, L4, L3, E6, E1, E2, E7
+
+Para eliminar el 48 debo fusionarlo con el nodo 6 y luego
+redistribuir todo el arbol derecho
+
+
+

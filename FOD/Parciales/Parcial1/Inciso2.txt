@@ -4,8 +4,8 @@ Arbol B+ de orden 4 y con politica de resolucion de underflow derecha.
 0: (3)(35)(67) 1 1: (241)(300)(329) 3 3: (422)(445) 4 4: (556)(600) -1
 -----------------------------------------------------------------------------------------
 +100
-
-                    2: 0 (67) 5 (241) 1 (422) 3 (540) 4
+                                        7: 2 (422) 6
+                    2: 0 (67) 5 (241) 1                    6: 3 (540) 4
 0: (3)(35) 5    5:(67)(100) 1 1: (241)(300)(329) 3 3: (422)(445) 4 4: (556)(600) -1
 
 L2, L0, E0, E5, E2
@@ -15,55 +15,54 @@ produce overflow y crear el nodo 5 con sus respectivos enlaces y subiendo una co
 de la menor clave del nuevo nodo.
 -----------------------------------------------------------------------------------------
 -540
-                    2: 0 (67) 5 (241) 1 (422) 3 (556) 4
+                                        7: 2 (422) 6
+                    2: 0 (67) 5 (241) 1                    6: 3 (556) 4
 0: (3)(35) 5    5:(67)(100) 1 1: (241)(300)(329) 3 3: (422)(445) 4 4: (556)(600) -1
 
-L2, L4, E2
+L7, L6, L4, E6
 
 Al eliminar el 540, que es no es un elemento debo subir una copia de la menor clave de
 su subarbol derecho.
 -----------------------------------------------------------------------------------------
 -67
-                    2: 0 (67) 5 (241) 1 (422) 3 (556) 4
+                                   7: 2 (422) 6
+           2: 0 (67) 5 (241) 1                        6: 3 (556) 4
 0: (3)(35) 5    5:(100) 1 1: (241)(300)(329) 3 3: (422)(445) 4 4: (556)(600) -1
 
-L2, L5, E5
+L7, L2, L5, E5, E2
 
 Elimino el 67 sin problemas.
 -----------------------------------------------------------------------------------------
 -422
-                    2: 0 (67) 5 (241) 1 (422) 3 (556) 4
+                                   7: 2 (422) 6
+           2: 0 (67) 5 (241) 1                        6: 3 (556) 4
 0: (3)(35) 5    5:(100) 1 1: (241)(300)(329) 3 3: (445) 4 4: (556)(600) -1
 
-L2, L3, E3
+L7, L6, E7
 
-Elimino el 422 sin problemas
+Elimino el 422 sin problemas.
 -----------------------------------------------------------------------------------------
 -445
-                    2: 0 (67) 5 (241) 1 (422) 3 (556) 4
+                                   7: 2 (422) 6
+           2: 0 (67) 5 (241) 1                      6: 3 (600) 4
 0: (3)(35) 5    5:(100) 1 1: (241)(300)(329) 3 3: (556) 4 4: (600) -1
 
-L2, L3 L4, E3
-                                                                                                            duda con respecto a la copia que queda en la raiz (556)
+L7, L6 L3, L4, E3, E4, E6
+
 Al eliminar el 445 el nodo 3 me quedaria en underflow por lo que le pido prestado un 
 elemento al nodo 4, respetando la politica de redistribucion derecha.
 -----------------------------------------------------------------------------------------
 -556
-                2: 0 (67)     5 (241)    1 (422) 3    
+                          7: 2 ((241)) 6
+           2: 0 (67) 5                       6: 3 (422) 4
+0: (3)(35) 5    5:(100) 1       1: (241)(300)(329) 3 3: (556)(600) -1
 
-      0: (3)(35) 5    5:(100) 1 1: (241)(300)(329) 3: (600) -1
-
-L2, L3, L4, E2
+L7, L6, L3, E3, E4, E2, E6
 
 Al eliminar el 556 se me produce underflow por lo que procedo a intentar redistribuir
-con el hermnano adyacente izquierdo el cual no voy a poder utilizar debido a que 
+con el hermnano adyacente derecho el cual no voy a poder utilizar debido a que 
 quedaria en underflow tambien. Lo que hago es eliminar del nodo 2 la clave mayor y
 reacomodar las hojas.
-
-
-
-
-
 
 
 

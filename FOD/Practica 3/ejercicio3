@@ -1,0 +1,213 @@
+program ej3P3;
+type
+    str15 = string [15];
+    
+    novela = record
+        cod: integer;
+        gen: str15;
+        nombre: str15;
+        duracion: real;
+        director: str15;
+        precio: real;
+    end;
+    
+    archivo = file of novela;
+
+procedure listarTxt (var arch: archivo);
+var
+    t: text;
+    n: novela;
+begin
+    //Asigno y creo el archivo txt y abro el archivo
+    Assign (t, 'novelas.txt');
+    rewrite (t);
+    reset (arch);
+    //Agrego las novelas al archivo txt
+    seek (arch, filePos (arch) + 1);
+    while (not eof (arch)) do begin
+        read (arch, n);
+        writeln (t, n.cod,' ',n.gen, ' ',n.nombre);
+        writeln (t, n.duracion,' ',n.director,' ',n.precio);
+    end;
+    //Cierro los archivos
+    close (arch);
+    close (t);
+    //Listo los elementos del archivo txt
+    reset (t);
+    while (not eof (t)) do begin
+        writeln ('NOVELA:');
+        readln (t, n.cod, n.gen, n.nombre);
+        readln (t, n.duracion, n.director, n.precio);
+        writeln ('Codigo: ',n.cod, ', genero: ',n.gen, ' nombre: ',n.nombre);
+        writeln ('Duracion: ',n.duracion:0:2,' director: ',n.director,' precio: ',n.precio:0:2);
+    end;
+    close (t);
+end;
+
+procedure eliminacion (var arch: archivo);
+var
+    cod: integer;
+    n, nov: novela;
+begin
+    writeln ('Ingrese el codigo de la novela que quiere eliminar');
+    readln (cod);
+    //Guardo en nov los datos del archivo de cabecera y preparo a N para recorrer
+    read (arch, nov);
+    n:= nov;
+    //Mientras no sea el final del archivo y el codigo recibido no coincida con el de la novela del archivo avanzo
+    while ((not eof (arch)) and (n.cod <> cod)) do begin
+        read (arch, n);
+    end;
+    //Cuando termina el while consulto si encontre la novela que quiero eliminar
+    if (n.cod = cod) then begin
+        //Me posiciono en la pos donde se encuentra la novela a eliminar y copio los datos del arch de cabecera
+        seek (arch, filePos(arch)-1);
+        write (arch, nov);
+        //Me posiciono en la cabecera del archivo y la actualizo con los datos del cliente eliminado
+        seek (arch, 0);
+        n.cod:= (n.cod) * -1;               //Preparo el codigo que indicara a futuro la posicion a reutilizar
+        write (arch, n);
+    end;
+end;
+
+procedure leerNovela (var n: novela);
+begin
+    writeln ('Ingrese el codigo de la novela');
+    readln (n.cod);
+    writeln ('Ingrese el genero de la novela');
+    readln (n.gen);
+    writeln ('Ingrese el nombre de la novela');
+    readln (n.nombre);
+    writeln ('Ingrese el duracion de la novela');
+    readln (n.duracion);
+    writeln ('Ingrese el director de la novela');
+    readln (n.director);
+    writeln ('Ingrese el precio de la novela');
+    readln (n.precio);
+end;
+
+procedure modificarDatos (var arch: archivo);
+var
+    n, nov: novela;
+begin
+    leerNovela (n);
+    read (arch, nov);
+    while ((not eof (arch)) and (n.cod <> nov.cod)) do begin
+        read (arch, nov);
+    end;
+    if (n.cod = nov.cod) then begin
+        seek (arch, filePos (arch) -1);
+        write (arch, n);
+    end;
+end;
+
+procedure darDeAlta (var arch: archivo);
+var
+    n, nov, aux: novela;
+    pos: integer;
+begin
+    leerNovela (n);
+    read (arch, nov);
+    if (nov.cod <> 0) then begin
+        //Obtengo la posicion donde voy a copiar los datos ingresados y me paro en esa posicion
+        writeln ('El codigo de cabecera es distinto de 0');
+        pos:= nov.cod * -1;
+        writeln ('pude');
+        seek (arch, pos);
+        writeln ('me posicione');
+        //Guardo los datos que estan en la posicion para luego escribirlos en la cabecera
+        read (arch, aux);
+        writeln ('me guarde los datos');
+        //Escribo la pos
+        seek (arch, filePos(arch)-1);
+        writeln ('me posicione en la pos');
+        write (arch, n);
+        writeln ('escribi en la pos');
+        //Me posiciono en la posicion 0 del archivo y copio los datos que estaban en la pos 
+        seek (arch, 1);
+        writeln ('me posicione en la pos 0');
+        write (arch, aux);
+        writeln ('escribi los datos de pos');
+    end
+    else begin
+        //Copio los datos en la posicion 0
+        seek (arch, fileSize(arch));
+        write (arch, n);
+    end;
+end;
+
+procedure mantenimiento (var arch: archivo);
+var
+    opc: integer;
+begin
+    writeln ('Ingrese que operacion de mantenimiento desea realizar entre 1-3');
+    reset (arch);
+    readln (opc);
+    case (opc) of 
+        1: darDeAlta (arch);
+        2: modificarDatos (arch);
+        3: eliminacion (arch);
+    end;
+    close (arch);
+end;
+
+{procedure leerNovela (var n: novela);
+begin
+    writeln ('Ingrese el codigo de la novela');
+    readln (n.cod);
+    writeln ('Ingrese el genero de la novela');
+    readln (n.gen);
+    writeln ('Ingrese el nombre de la novela');
+    readln (n.nombre);
+    writeln ('Ingrese el duracion de la novela');
+    readln (n.duracion);
+    writeln ('Ingrese el director de la novela');
+    readln (n.director);
+    writeln ('Ingrese el precio de la novela');
+    readln (n.precio);
+end;}
+
+procedure generarArchivo (var arch: archivo);
+var
+    n: novela;
+    i: integer;
+begin
+    //Creo el archivo 
+    rewrite (arch);
+    //Creo un archivo ficticio para ponerlo en la cabecera
+    n.cod:= 0;
+    n.gen:= '';
+    n.nombre:= '';
+    n.duracion:= 0;
+    n.director:= '';
+    n.precio:= 0;
+    write (arch, n);
+    //Agrego novelas 
+    for i:= 1 to 3 do begin
+        leerNovela (n);
+        write (arch, n);
+    end;
+    //Cierro el archivo 
+    close (arch);
+end;
+    
+var
+    arch: archivo;
+    opc: integer;
+    ruta: str15;
+begin
+    writeln ('Ingrese un nombre para su archivo');
+    readln (ruta);
+    Assign (arch, ruta);
+    writeln ('Ingrese la opcion que quiere realizar 1-3 o 4 para terminar el programa');
+    readln (opc);
+    while (opc <> 4) do begin
+        case (opc) of 
+            1: generarArchivo (arch);
+            2: mantenimiento (arch);
+            3: listarTxt (arch);
+        end;
+        writeln ('Ingrese la opcion que quiere realizar 1-3 o 4 para terminar el programa');
+        readln (opc);
+    end;
+end.

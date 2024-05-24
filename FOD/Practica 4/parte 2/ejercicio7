@@ -1,0 +1,55 @@
+1) 
+                        2: 0 (220) 1 (390) 4 (455) 5 (541) 3                                                              //ME DOY CUENTA QUE VA EN EL NODO 2
+                        
+        0: (10)(150) 1: (225)(241)(331)(360) 4: (400)(407) 5: (508)(533) 3: (690)(823)
+-----------------------------------------------------------------------------------------------      
+Insertamos el 320   
+                                      8: 2 (390) 7
+               2: 0 (220) 1 (320) 6               7: 4 (455) 5 (541) 3
+                       
+  0: (10)(150) 1: (225)(241)  6: (331)(360)      4: (400)(407) 5: (508)(533) 3: (690)(823)
+
+L2 | L1 | E6 | E1 | L2 | E7 | E2 | E8
+- Intento agregar la clave 320 en el nodo 1, como esta lleno se produce overflow, se
+  divide, se crea el nuevo nodo 6, se promociona la clave 320, se intenta agregar en
+  el nodo raiz, como esta lleno se produce overflow, se divide, se crea el nuevo nodo 7,
+  se promociona la clave 390, y se crea el nuevo nodo raiz 8
+-----------------------------------------------------------------------------------------------
+Eliminamos el 390
+
+                                         8: 2 (400) 7
+                                         
+               2: 0 (220) 1 (320) 6               7: 4 (455) 5 (541) 3
+                       
+  0: (10)(150) 1: (225)(241)  6: (331)(360)      4:(407) 5: (508)(533) 3: (690)(823)
+
+L8 | L7 | L4 | E4 | E8
+- Leemos el nodo 8, nos damos cuenta que es el elemento a eliminar, entonces reemplazamos 
+  con la menor clave del arbol derecho.
+-----------------------------------------------------------------------------------------------
+Eliminamos el 400
+                                    8: 2 (407) 7
+                                         
+               2: 0 (220) 1 (320) 6               7: 4 (508) 5 (541) 3
+                       
+  0: (10)(150) 1: (225)(241)  6: (331)(360)      4:(455) 5:(533) 3: (690)(823)
+
+L8 | L7 | L4 | L5 | L7 | E5 | E7 | E4 | E8
+- Leemos el nodo 8, nos damos cuenta que es el elemento a eliminar, entonces reemplazamos 
+  con la menor clave del arbol derecho pero al intentar hacerlo, se produce underflow en 
+  el nodo 4. Trataremos este underflow redistribuyendo con el hermano adyacente derecho.
+  Para ello, bajamos el primer registro del nodo 7 y promocionamos el primer registro del
+  nodo 5.
+-----------------------------------------------------------------------------------------------
+Eliminamos el 533
+                                     8: 2 (407) 7
+                                         
+               2: 0 (220) 1 (320) 6               7: 4 (508) 5 (690) 3
+                       
+  0: (10)(150) 1: (225)(241)  6: (331)(360)      4:(455)   5:(541)   3: (823)
+
+L8 | L7 | L5 | L3 | L7 | E5 | E7 | E3 
+- Leemos los nodos hasta llegar al nodo 5 que es donde se encuentra el elemento a eliminar. 
+  Al intentar eliminar se produce underflow por lo que redistribuiremos con el hermano 
+  adyacente derecho. Para ello, bajamos el segundo registro del nodo 7 y promocionamos 
+  el primer registro del nodo 3.

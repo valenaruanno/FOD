@@ -1,0 +1,118 @@
+program ejercicio7.pas;
+const
+    fin = '500000';
+type
+    str15 = string[15];
+    str30 = string[30];
+    aves = record
+        codigo: str15;
+        nombre: str15;
+        familia: str15;
+        descripcion: str30;
+        zona: str30;
+    end;
+    
+    archivo = file of aves;
+
+procedure compactar (var a: archivo);
+var
+    ave, nue: aves;
+    pos, n: integer;
+begin
+    reset (a);
+    read (a, ave);
+    n:= 1;
+    seek (a, 0);
+    while (not eof (a)) do begin
+        if (ave.codigo < 0) then begin
+            pos:= filePos(a);
+            seek (a, fileSize(a) - n);
+            read (a, nue);
+            if (nue.codigo < 0) then begin
+                while (nue.codigo < 0) do begin
+                    n:= n + 1;
+                    seek (a, fileSize (a) - n);
+                    read (a, nue);
+                end;
+                n:= n + 1;
+                seek (a, fileSize(a) - n);
+                Truncate (a);
+            end
+            else begin
+                seek (a,filePos(a) - 2);
+                Truncate (a);
+            end;
+            seek (a, pos);
+            write (a, nue);
+        end
+        else 
+            seek (a, filePos(a) + 1);
+        if (not eof (a)) begin
+            read (a, ave);
+            seek (a, filePos (a) - 1);
+            n:= 1;
+        end;
+    end;
+    close (a);
+end;
+    
+procedure marcarRegistro (var a: archivo; cod: str15);
+var
+    ave: aves;
+begin
+    reset (a);
+    read (a, ave)
+    while ((not eof (a)) and (ave.codigo <> cod)) do 
+        read (a, ave);
+    if (ave.codigo = cod) then begin
+        ave.codigo:= -1;
+        seek (a, filePos(a) - 1);
+        writeln (a, ave);
+    end;
+    close (a);
+end;
+
+procedure importarArchivo (var a: archivo; var t: Text);
+var
+    ave: aves;
+begin
+    reset (t);
+    rewrite (a);
+    while (not eof (t)) do begin
+        readln (t, ave.codigo,ave.nombre,ave.familia);
+        readln (t, ave.descripcion,ave.zona);
+        writeln (a, ave);
+    end;
+    close (t);
+    close (a);
+end;
+
+var
+    a: aves;
+    t: Text;
+    cod: str15;
+    ave: aves;
+begin
+    //Realizo las asignaciones
+    Assign (a,'aves');
+    Assign (t,'');
+    //Importo el archivo con las aves
+    importarArchivo (a, t);
+    //Eliminar del archivo
+    writeln ('Ingrese un codigo de ave a eliminar');
+    readln (cod);
+    while (cod <> fin) do begin
+        marcarRegistro (a, cod);
+        writeln ('Ingrese un codigo de ave a eliminar');
+        readln (cod);
+    end;
+    //Compactacion del archivo
+    compactar (a);
+    //Listar archivo
+    reset (a);
+    while (not eof (a)) do begin
+        read (a, ave);
+        writeln ('El codigo del ave es: ',ave.codigo,', el nombre es: ',ave.nombre,', la familia es: ', ave.familia,', su descripcion: ',ave.descripcion,' y la zona donde se encuentra: ',ave.zona);
+    end;
+    close (a);
+end.

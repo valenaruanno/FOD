@@ -1,0 +1,33 @@
+2-a)
+program ejercicio1;
+const   
+    M = 4;
+type
+    str30 = string[30];
+    str8 = string[8];
+    alu = record
+        nomYape: str30;
+        dni: longint;
+        legajo: integer;
+        anioI: str8;
+    end;
+    
+    nodo = record
+        cant_claves: integer;
+        claves: array[1..M-1] of longint;
+        enlaces: array[1..M-1] of integer;
+        hijos: array[1..M] of integer;
+    end;
+    
+    TArchivoDatos = file of alu;
+    arbolB: file of nodo;
+    
+
+var
+    archivoDatos: TArchivoDatos;
+    archivoIndice: arbolB;
+b) Formula = 512 = (M-1) * 4 + M * 4 + 4 // 512 = 4M - 4 + 4M + 4 // 512 = 8M // 512/8 = M // M = 64.
+c) Implica que nuestro arbol crecerá hacia los costado y no hacia abajo, y además, al querer buscar un dato vamos a necesitar menos lecturas.
+d) Para buscar el alumno con dni 12345678 es necesario recorrer el arbol hasta encontrar la clave que coincida con el dni y luego recorrer el registro de datos hasta acceder a dicho registro de alumno.
+e) Si lo deseamos buscar por numero de legajo tendriamos que recorrer todo el arbol. No tiene sentido ya que deberiamos cambiar archivo de indices para que sea eficiente buscar por numero de legajo. Lo que haria es armar otro arbol que sea eficiente para buscar por legajo.
+f) El problema que encontramos es que al tener los archivos separados y querer buscar dentro de ese rango, tendriamos muchos desplazamiento de nodos y se tornaria mas lenta la busqueda.

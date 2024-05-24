@@ -1,0 +1,88 @@
+program ej2P3;
+const
+    eli = 1000;
+    marca = '@';
+type
+    str15 = string[15];
+    asistente = record
+        nro: integer;
+        apellido: str15;
+        nombre: str15;
+        email: str15;
+        telefono: integer;
+        dni: integer;
+    end;
+
+    archivo = file of asistente;
+
+procedure eliminarLogico (var arch: archivo);
+var
+    a: asistente;
+begin
+    //Abrimos el archivo
+    reset (arch);
+    //Realizamos la eliminacion
+    while (not eof (arch)) do begin
+        read (arch, a);
+        if (a.nro < eli) then begin
+            a.apellido:= marca;
+            seek (arch, filePos(arch) - 1);
+            write (arch, a);
+        end;
+    end;
+    //Cerramos el archivo
+    close (arch);
+end;
+procedure leerAsistente (var a: asistente);
+begin
+    writeln ('Ingrese el numero del asistente');
+    readln (a.nro);
+    writeln ('Ingrese el apellido del asistente');
+    readln (a.apellido);
+    writeln ('Ingrese el nombre del asistente');
+    readln (a.nombre);
+    writeln ('Ingrese el email del asistente');
+    readln (a.email);
+    writeln ('Ingrese el telefono del asistente');
+    readln (a.telefono);
+    writeln ('Ingrese el dni del asistente');
+    readln (a.dni);
+end;
+
+procedure  generarArchivo (var arch: archivo);
+var
+    a: asistente;
+    i: integer;
+begin
+    //Asigno y creo el archivo 
+    Assign (arch, 'archivo');
+    rewrite (arch);
+    //Agrego elementos
+    for i:= 1 to 3 do begin
+        leerAsistente (a);
+        write (arch, a);
+    end;
+    //Cierro el archivo
+    close (arch);
+end;
+
+var
+    arch: archivo;
+    a: asistente;
+begin
+    generarArchivo (arch);
+    eliminarLogico (arch);
+    writeln ('-----------------------------------------------');
+    reset (arch);
+    while (not eof(arch)) do begin
+        read (arch, a);
+        writeln (a.nro);
+        writeln (a.apellido);
+        writeln (a.nombre);
+        writeln (a.email);
+        writeln (a.telefono);
+        writeln (a.dni);
+        writeln ('--------------------------------------------');
+    end;
+    close (arch);
+end.

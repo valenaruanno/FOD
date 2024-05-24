@@ -1,0 +1,54 @@
+10) Arbol B de orden 5. Política de resolución de underflows: derecha.
+Política derecha: se intenta redistribuir con el hermano adyacente derecho, si no es
+posible, se fusiona con hermano adyacente derecho.
+
+                  2: 0 (315) 1 (485) 4 (547) 5 (639) 3
+0: (148)(223) 1: (333)(390)(442)(454) 4: (508)(511) 5: (614)(633) 3: (789)(915)
+-------------------------------------------------------------------------------------------------
++450
+                                        8: 2 (485) 7
+            2: 0 (315) 1 (442) 6                          7: 4 (547) 5 (639) 3
+0: (148)(223)   1: (333)(390)    6: (450)(454)   4: (508)(511)   5: (614)(633)    3: (789)(915)
+
+L2 | L1 | E6 | E7 | E8
+
+Leemos el nodo 2 y nos desplazamos hacia el nodo 1. Al intentar insertarlo, nos damos cuenta 
+que se produce overflow, por lo que, dividimos el nodo 1 y creamos un nodo 6 con la segunda 
+mitad del nodo 1, de esta segunda mitad tomamos el primer elemento y lo promocionamos a la raiz
+en donde denuevo se produce overflow. Para resolverlo dividimos el nodo 2 y creamos el nodo 7
+con la segunda mitad. Promocionamos el elemento que se encuentra mas a la izquierda generando 
+una nuevo raiz.
+-------------------------------------------------------------------------------------------------
+-485
+
+                                       8: 2 (508) 7
+            2: 0 (315) 1 (442) 6                          7: 4 (547) 5 (639) 3
+0: (148)(223)   1: (333)(390)    6: (450)(454)   4:(511)   5: (614)(633)    3: (789)(915)
+
+L8 | E4 | E8
+
+Al querer eliminar un nodo no hoja, lo debemos intercambiar con la menor clave del subarbol
+derecho.
+-------------------------------------------------------------------------------------------------
+-511
+
+                                      8: 2 (508) 7
+            2: 0 (315) 1 (442) 6                          7: 4 (614) 5 (639) 3
+0: (148)(223)   1: (333)(390)    6: (450)(454)      4:(547)   5: (633)    3: (789)(915)
+
+L8 | L7 | L4 | E4 | L5 | E5 | E7
+
+Al intentar eliminar el 511 notamos que se produce underflow, por lo cual, debemos usar la 
+politica de redistribucion derecha. Al hacerlo, subimos el registro 614 al nodo 7 y bajamos el
+registro 547 del nodo 7 al nodo 4.
+-------------------------------------------------------------------------------------------------
+-614
+
+                                      8: 2 (508) 7
+            2: 0 (315) 1 (442) 6                          7: 4 (633) 5 (789) 3
+0: (148)(223)   1: (333)(390)    6: (450)(454)      4:(547)   5: (639)    3: (915)
+
+L8 | L7 | E3 | E7 | L5 | E7 | E5                                                                                                    //DUDA
+
+Al eliminar el 614 y no estar en una hoja, debemos reemplazarlo con la menor clave del subarbol
+derecho. Luego, debemos intercambiar la menor clave del nodo 7 con la menor clave del registro 5.

@@ -1,0 +1,98 @@
+program ejercicio2;
+type
+    info = record
+        codLoc: integer;
+        numMesa: integer;
+        cantVotos: integer;
+    end;
+    
+    info2 = record
+        codLoc: integer;
+        cantVotos: integer;
+    end;
+    
+    eleccion = file of info;
+    definitivo = file of info2;
+    procesados = file of integer;
+
+procedure check (var p: procesados; loc: integer;var ok: boolean);
+var
+    num: integer;
+begin
+    reset (p);
+    while ((not eof (p)) and (ok = false)) do begin
+        read (p, num);
+        if (num = loc) then
+            ok:= true;
+    end;
+    close (p);
+end;
+
+procedure porcesarInfo (var e: eleccion);
+var
+    i, nue: info;
+    i2: info2;
+    elec: definitivo;
+    pos, total: integer;
+    p: procesados;
+    ok : boolean;
+begin
+    Assign (elec, 'Definitivo');
+    Assign (p,'procesados');
+    reset (e);
+    rewrite (elec);
+    rewrite (p);
+    while (not eof (e)) do begin
+        ok:= false;
+        read (e, i);
+        pos:= filePos (e);
+        check (p, i.codLoc, ok);
+        while ((not eof (e)) and (ok = false)) do begin
+            read (e, nue);
+            if (nue.codLoc = i.codLoc) then
+                i.cantVotos:= i.cantVotos + nue.cantVotos;
+        end;
+        if (ok = false) then begin
+            write (p, i.codLoc);
+            i2.codLoc:= i.codLoc;
+            i2.cantVotos:= i.cantVotos;
+            write (elec, i2);
+            seek (e, pos);
+        end;
+    end;
+    seek (elec, 0);
+    total:= 0;
+    while (not eof (elec)) do begin
+        read (elec, i2);
+        writeln ('Codigo de localidad: ',i2.codLoc, ', cantidad de votos de la misma: ',i2.cantVotos);
+        total:= total + i2.cantVotos;
+    end;
+    writeln ('La cantidad de votos total de las elecciones fue: ',total);
+    close (e);
+    close (elec);
+    close (p);
+end.
+    
+procedure importarEleccion (var e: eleccion);
+var
+    i: info;
+    t: Text;
+begin
+    Assign (t, '');
+    reset (t);
+    rewrite (e);
+    while (not eof (t)) do begin
+        readln (t, i.codLoc, i.numMesa, i.cantVotos);
+        write (e, i);
+    end;
+    close (t);
+    close (e);
+end;
+
+var
+    e: eleccion;
+begin   
+    Assign (e, 'Eleccion2024');
+    importarEleccion (e);
+    porcesarInfo (e);
+end.

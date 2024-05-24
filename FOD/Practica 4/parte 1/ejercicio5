@@ -1,0 +1,6 @@
+5)
+  -  Overflow: El overflow se produce cuando hay mas cantidad de registros en un nodo que lo que está permitido.
+  - Underflow: El underflow se produce cuando hay menos cantidad de registros en un nodo que la cantidad permitida. En los arboles B esa cantidad es (M/2) - 1, en cambio, en los arboles B* esa cantidad es ((2M - 1) / 3).
+  - Redistribución: Se produce cuando un nodo tiene underflow y para solucionarlo puede trasladar llaves de un nodo adyacente.
+  - Fusión o concatenación: Se produce cuando un nodo tiene underflow y su hermano adyacente está al minimo y no se puede redistribuir, se contatena con un nodo adyacente disminuyendo el numero de nodos y en algunois 
+    casos la altura del arbol.

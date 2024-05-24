@@ -1,0 +1,108 @@
+program ej6tp2;
+const
+    valor = 9999;
+type
+    usuario = record
+        codU: integer;
+        fecha: integer;
+        tiempo_sesion: real;
+    end;
+    
+    datos = record
+        codU: integer;
+        fecha: integer;
+        tiempo_total: real;
+    end;
+    
+    detalle = file of usuario;
+    maestro = file of datos;
+
+procedure importarDet (var detTexto: text; var det: detalle);
+var
+    u: usuario;
+begin
+    while (not eof(detTexto)) do begin
+        readln (detTexto, u.codU, u.fecha, u.tiempo_sesion);                        //leo los campos del usuario del archivo txt
+        write (det, u);                                                             // escribo la info del usuario en el archivo binario
+    end;
+end;
+
+procedure importarDetalles (var det1, det2: detalle);
+var
+    ruta: string;
+    detTexto: text;
+begin
+    ruta:= 'C:\Users\valen\OneDrive\Documentos\detEj6p2.txt';
+    assign (detTexto, ruta);             //enlazo el archivo de texto que se dispone
+    assign (det1,'det1');               //enlazo los archivos 
+    assign (det2,'det2');                   //               de detalle
+    rewrite (det1);                     //creo los archivos 
+    rewrite (det2);                         //              de detalle
+    reset (detTexto);                    //levanto el archivo de texto
+    importarDet (detTexto, det1);
+    importarDet (detTexto, det2);
+    //cierro todos los archivos
+    close (detTexto);
+    close (det1);
+    close (det2);
+end;
+
+procedure leer (var det: detalle; var regD: usuario);
+begin
+    if (not eof(det)) then
+        read (det, regD)
+    else
+        regD.codU:= valor;
+end;
+
+procedure minimo (var det1, det2: detalle; regD1, regD2: usuario; var min: usuario);
+begin
+    if (regD1.codU < regD2.codU) then begin
+        min:= regD1;
+        leer (det1, regD1);
+    end
+    else begin
+        min:= regD2;
+        leer (det2, regD2);
+    end;
+end;
+
+procedure crearMaestro (var mae: maestro; var det1, det2: detalle);
+var
+    regM: datos;
+    regD1, regD2, min: usuario;
+begin
+    assign (mae, 'maestro/var/log');        //enlazo el archivo maestro
+    // levanto y creo los archivos necesarios
+    reset (det1);
+    reset (det2);
+    rewrite (mae);
+    //leo un usuario de cada detalle 
+    leer (det1, regD1);
+    leer (det2, regD2);
+    minimo (det1, det2, regD1, regD2, min);                //calculo el minimo codigo de los detalles 
+    while (min.codU <> valor) do begin      // mientras no se terminen de leer todos los usuarios de ambos detalles
+        regM.codU:= min.codU;               // me guardo el codigo del usuario qeu estoy procesando
+        while (regM.codU = min.codU) do begin       //mientras el codigo que estoy procesando es igual al del minimo
+            regM.tiempo_total:= 0;                  //inicializo el contador de tiempo para el reg que proceso en una fecha determinada
+            regM.fecha:= min.fecha;                 //guardo la fecha del reg que se esta procesando (para ordenarlo por fecha tmb)
+            while ((regM.codU = min.codU) and (regM.fecha = min.fecha)) do begin
+                regM.tiempo_total:= regM.tiempo_total + min.tiempo_sesion;
+                minimo (det1, det2, regD1, regD2, min);
+            end;
+            write (mae, regM);                    //escribo el registro de un usuario en una fecha determinada
+        end;
+    end;
+    //procedo a cerrar todos los archivos
+    close (det1);
+    close (det2);
+    close (mae);
+end;
+
+var
+    det1, det2: detalle;
+    mae: maestro;
+begin
+    importarDetalles (det1, det2);
+    crearMaestro (mae, det1, det2);
+end.

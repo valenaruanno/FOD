@@ -1,0 +1,97 @@
+program ej5Practica2;
+const
+    valor = "zzz";
+    dimF = 2;
+type
+    rango = 1..dimF;
+    str10 = string[10];
+    str30 = string[30];
+    producto = record
+        codProd: str10;
+        nom: str10;
+        descripcion: str30;
+        stockD: integer;
+        stockM: integer;
+        precio: real;
+    end;
+    
+    venta = record
+        codProd: str10;
+        cantV: integer;
+    end;
+    
+    maestro = file of producto;
+    detalle = file of venta;
+    
+    det30 = array [rango] of detalle;
+
+
+procedure importarMestro (var mae: maestro);
+var
+    ruta: string;
+    p: producto;
+    textMae: text;
+begin
+    ruta:= 'C:\Users\valen\OneDrive\Documentos\archivoProductos.txt';
+    Assign (textMae, ruta);    //linkeo el archivo txt que dispongo
+    Assign (mae,'maestroB');   //linkeo el nuevo archivo maestro que voy a utilizar
+    rewrite (mae);             //creo el archivo maestro
+    reset (textMae);           //levanto el archivo que dispongo
+    while (not eof (textMae)) do begin
+        readln (textMae, p.codProd, p.nom, stockD. p.stockM, p.precio);     // leo la info 
+        readln (textMae, p.descripcion);                                    //            del producto
+        write (mae, p);                                                     //escribo la info en  mi nuevo archivo
+    end;
+    close (mae);            //cierro ambos
+    close (textMae);                    //archivos
+end;
+
+procedure importarDetalle (var det: detalle);
+var
+    ruta: string;
+    v: venta;
+    textDet: text;
+begin
+    ruta:= 'C:\Users\valen\OneDrive\Documentos\archDet.txt';    
+    assign (textDet, ruta);                                     //linkeo el archivo txt que dispongo con ventas          
+    assign (det,'detalleP'),                                    //linkeo el nuevo archivo detalle que voy a tener en la posicion del vector enviada como parametro
+    rewrite (det);
+    reset(textDet);
+    while (not eof (textDet)) do begin
+        readln (textDet, v.codProd, v.cantV);       //leo la info disponible
+        write (det, v);                             //escribo la info en mi nuevo archivo
+    end;
+    close (det);            //cierro ambos
+    close (textDet);                //archivos    
+end;
+
+procedure cargarVec (var vec: det30);
+var
+    i: integer;
+begin
+    for i:= 1 to dimF do
+        importarDetalle (vec[i]);
+end;
+
+procedure actualizarMaestro (var mae: maestro; var vec: dec30; var texto: text);
+var
+    i: integer;
+begin
+    assign (texto,'infoImportante.txt');        //linkeo el archivo que voy a crear con los productos que tengan stock disponible < stock minimo
+    rewrite (texto);                            //creo el archivo txt
+    resetMae(mae);                              //levanto el archivo maestro que dispongo
+    for i:= 1 to dimF do begin
+        reset (dec30[i]);                       //levanto el archivo detalle de la posicion i del vector
+    end;
+end;
+
+var
+    vec: det30;
+    mae: maestro;
+    texto: Text;
+    nomT: str30;
+begin 
+    importarMaestro (mae); //recibo un archivo de productos txt y lo transformo en binario para utilizarlo
+    cargarVec (vec);       // carga cada posicion del vector con un archivo detalle que contiene ventas de distintas sucursales
+    actualizarMaestro (mae, vec, texto);
+end;

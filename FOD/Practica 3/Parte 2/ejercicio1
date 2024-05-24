@@ -1,0 +1,98 @@
+program ej1Parte2P3;
+const
+    fin = 9999;
+type
+    str15: string[15];
+    
+    productos = record 
+        cod: integer;
+        nombre: str15;
+        precio: real;
+        stockAct: integer;
+        stockMin: integer;
+    end;
+    
+    maestro  = file of productos;
+    
+    ventas = record
+        codProd: integer;
+        cantUni: integer;
+    end;
+    
+    detalle = file of ventas;
+    
+
+procedure recorrerDetalle (var det: detalle; codAct integer; var unidades: integer);
+var
+    v: ventas;
+begin
+    reset (det);
+    while (not eof (det)) do begin
+        read (det, v);
+        if (v.codProd = codAct) then 
+            unidades:= unidades + v.cantUni;
+    end;
+    close(det);
+end;
+
+procedure actualizarMaestro (var mae: maestro; var det: detalle);
+var
+    codAct, unidades: integer;
+    p: productos;
+begin
+    reset (mae);
+    while (not eof (mae)) do begin
+        read (mae, p);
+        codAct:= p.cod;
+        unidades:= 0;
+        recorrerDetalle (det, codAct, unidades);
+        if (unidades > 0) then begin
+            seek (mae, filePos(mae) - 1);
+            p.stockAct:= p.stockAct - unidades;
+            write (mae, p);
+        end;
+    end;
+    close (mae);
+end;
+procedure importarDetalle (var det: detalle);
+var
+    t: Text;
+    v: ventas;
+begin
+    Assign (t, '');                         //Asignarle algo de texto
+    rewrite (det);
+    reset (t);
+    while (not eof (t)) do begin
+        readln (t, v.codProd, v.cantUni);
+        write (det, v);
+    end;
+    close (t);
+    close (det);
+end;
+
+procedure importarMaestro (var mae: maestro);
+var
+    t: Text;
+    p: productos;
+begin
+    Assign (t, '');                         //Asignarle algo al texto
+    rewrite (mae);
+    reset (t);
+    while (not eof (t)) do begin
+        readln (t, p.cod,, p.nombre, p.precio, p.stockAct, p.stockMin);
+        write (mae, p);
+    end;
+    close (t);
+    close (mae);
+end;
+
+var
+    mae: maestro;
+    det: detalle;
+begin
+    Assign (mae, 'mae');
+    Assign (det, 'det');
+    importarMaestro (mae);
+    importarDetalle (det);
+    actualizarMaestro (mae, det);
+end.

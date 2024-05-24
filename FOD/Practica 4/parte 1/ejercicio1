@@ -1,0 +1,29 @@
+1-a)
+program ejercicio1;
+const   
+    M = 4;
+type
+    str30 = string[30];
+    str8 = string[8];
+    alu = record
+        nomYape: str30;
+        dni: longint;
+        legajo: integer;
+        anioI: str8;
+    end;
+    
+    nodo = record
+        cant_datos: integer;
+        datos: array[1..M-1] of alu;
+        hijos: array[1..M] of integer;
+    end;
+    
+    arbolB: file of nodo;
+    
+
+var
+    archivoIndice: arbolB;
+
+b) 
+
+c) El impacto que tiene sobre M es al tener un arbol B con tamaño de 512 bytes, al querer meter registros de alumnos, van a entrar menos cantidad que si quisieramos guardar un enlace a ese registro.

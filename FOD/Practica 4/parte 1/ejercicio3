@@ -1,0 +1,9 @@
+1- a) Los elementos se organizan en un vector. En los nodos interiores se encuentran las claves necesarias para definir caminos de busqueda y 
+    en las hojas se encuentran las claves a los registros.
+b) La carcateristica distintiva es que las hojas se vinculan formando una lista facilitando un recorrido secuencial rapido.
+c) CONSULTAR.
+d) Para implementsr una busqueda lo que debemos hacer es recorrer el arbol hasta llegar al ultimo nivel, siempre tomando los nodos convenientes
+    en base a la clave. La diferencia es que simpre vamos a tener que llegar hasta las hojas para acceder al indice.
+e) Lo que habria que hacer es buscar el 40.000.000 en el indice y al encontrarlo utilzar el recorrido secuencial de las hojas hasta llegar al 
+    valor 45.000.000. La ventaja es que es mucho mas eficiente en cuanto a tiempo y acceso.
+

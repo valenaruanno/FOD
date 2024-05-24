@@ -1,0 +1,113 @@
+program ejercicio10;
+const
+    dimF = 15;
+type
+    rango = 1.. dimF;
+    
+    empleado = record
+        depto: integer;
+        division: integer;
+        nEmple: integer;
+        cat: rango;
+        cantHorasEx: real;
+    end;
+    
+    horas = record
+        cat: rango;
+        cant: real;
+    end;
+    
+    arch = file of empleado;
+    
+    vector = array [rango] of real;
+
+procedure listado (var binario: arch; v: vector);
+var
+    totHDiv, montoTDiv, totHDep, montoTDep, cobro, horas: real;
+    deptoAct, divAct, empAct: integer;
+    e: empleado;
+begin
+    //Levanto el archivo binario
+    reset (binario);
+    //Informo todo
+    read (binario, e);
+    while (not eof(binario)) do begin
+        totHDep:= 0;
+        montoTDep:= 0;
+        deptoAct:= e.depto;
+        writeln ('Departamento');
+        while ((not eof(binario)) and (deptoAct = e.depto)) do begin
+            divAct:= e.division;
+            totHDiv:= 0;
+            montoTDiv:= 0;
+            writeln ('Division');
+            while ((not eof(binario)) and (divAct = e.division)) do begin
+                cobro:= 0;
+                horas:= 0;
+                empAct:= e.nEmple;
+                while ((not eof(binario)) and (empAct = e.nEmple)) do begin
+                    cobro:= cobro + (e.cantHorasEx * v[e.cat]);
+                    horas:= horas + e.cantHorasEx;
+                    read (binario, e);
+                end;
+                montoTDep:= montoTDep + cobro;
+                totHDep:= totHDep + horas;
+                totHDiv:= totHDiv + horas;
+                montoTDiv:= montoTDiv + cobro;
+                writeln ('Numero del empleado: ', e.nEmple, '. Total de horas: ', horas,'. Importe a cobrar: ', cobro);
+            end;
+            writeln ('Total de horas division: ', totHDiv);
+            writeln ('Monto total por division', montoTDiv);
+        end;
+        writeln ('Total horas departamento', totHDep);
+        writeln ('Monto total por departamento', montoTDep);
+        writeln(' ');
+    end;
+    //Cierro el archivo binario
+    close (binario);
+end;
+
+procedure importarEmple (var binario: arch);
+var
+    t: Text;
+    e: empleado;
+begin
+    //Realizo las asignaciones
+    Assign (t, 'empleados.txt');
+    Assign (binario, 'binario');
+    //Creo y levanto los archivos
+    reset (t);
+    rewrite(binario);
+    //Leo desde el texto y almaceno en el arch binario
+    while (not eof(t)) do begin
+        readln (t, e.depto, e.division, e.nEmple, e.cat, e.cantHorasEx);
+        write (binario, e);
+    end;
+    //Cierro los archivos
+    close (t);
+    close (binario);
+end;
+
+procedure cargarVector (var v: vector);
+var
+    t: Text;
+    h: horas;
+begin
+    //Realizo las asignaciones
+    Assign(t, 'horasExtras.txt');
+    reset (t);
+    while (not eof(t)) do begin
+        read (t, h.cat, h.cant);
+        v[h.cat]:= h.cant;
+    end;
+    close (t);
+end;
+
+var
+    v: vector;
+    binario: arch;
+begin
+    cargarVector (v);
+    importarEmple (binario);
+    listado (binario, v);
+end.

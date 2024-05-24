@@ -1,0 +1,101 @@
+9) Arbol de orden 6. Underflows: derecha o izquierda.
+  Política derecha o izquierda: se intenta redistribuir con el hermano adyacente
+derecho, si no es posible, se intenta con el hermano adyacente izquierdo, si tampoco
+es posible, se fusiona con hermano adyacente derecho.
+
+  0: (34) (56) (78) (100) (176)
+---------------------------------------------------------------------------------------------
+Insertar el 15
+                2: 0 (78) 1
+ 0: (15) (34) (56)        1: (100) (176)
+ 
+L0 | E1 | E2
+
+Leemos el nodo 0, si insertamos el 15 se produce overflow, por lo que, partimos el nodo en
+dos partes creando el nodo 1 con la segunda mitad del nodo partido, y promocionamos el menor 
+registro creando el nodo 2.
+----------------------------------------------------------------------------------------------
+Insertamos el 71
+                      2: 0 (78) 1
+ 0: (15) (34) (56) (71)         1: (100) (176)
+
+ L2 | L0 | E0 
+ 
+ Leemos el nodo 2 y nos desplazamos al nodo izquierdo. Insertamos el 71 sin provocar overflow.
+----------------------------------------------------------------------------------------------
+Insertamos el 3
+                          2: 0 (78) 1
+ 0: (3) (15) (34) (56) (71)         1: (100) (176)
+L2 | L0 | E0
+
+ Leemos el nodo 2 y nos desplazamos al nodo izquierdo. Insertamos el 3 sin provocar overflow.
+ ---------------------------------------------------------------------------------------------
+ Insertamos el 48
+                 2: 0 (48) 3 (78) 1
+ 0: (3) (15) (34)   3: (56) (71)     1: (100) (176)
+ 
+ L2 | L0 | E3 |E2
+
+Leemos la raiz y nos desplazamos hacia la izquierda. Al insertar el 48 se genera overflow en 
+el nodo, por lo que, dividimos el registro en dos partes y creamos un nuevo nodo con la 
+segunda parte del mismo. El 48, al ser el menor registro del nuevo nodo lo promocionamos a
+la raiz. 
+----------------------------------------------------------------------------------------------
+Eliminamos el 56
+
+             2: 0 (34) 3 (78) 1
+ 0: (3) (15)    3: (48) (71)     1: (100) (176)
+
+ L2 | L3 | L1 | L0 | E3 | E2                                                                                               // NI BIEN ENCONTRAMOS EL NODO CON EL NUMERO, ELIMINAMOS Y DESP TRATAMOS EL UNDERFLOW? O ELIMINAMOS A LO ULTIMO COMO EN MI CASO
+
+Al intentar eliminar el 56, se produce underflow en el nodo 3. En este caso, tratamos de 
+redistribuir primero con el hermano adyacente derecho pero al no ser posible, debemos
+hacerlo con el izquierdo. Cuando hacemos la redistribucion, bajamos el 48 que se encuentra en  
+la raiz y subimos el registro mas derecho del nodo 0. Luego eliminamos el 56.
+----------------------------------------------------------------------------------------------
+Eliminamos el 71
+
+        2: 0 (34) 1
+ 0: (3) (15)        3: (48)(78)(100)(176)
+
+L2 | L3 | L1 | L0 | E3 | E2 | E2 | E1
+
+Al intentar eliminar el 71, se produce underflow en el nodo 3. Al tratar de redistribuir con
+el hermano derecho primero, y con el izquierdo despues, nos damos cuanta que no se puede ya 
+que se produce underflow en ellos. En este caso, lo resolvemos fusionando con el hermano                                       DUDAS ??
+derecho. Por ultimo, bajamos el 78 y el 48 al nodo derecho para que nos quede 
+balanceado.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

@@ -1,0 +1,117 @@
+program ej7p2;
+const
+    valor: '9999';
+type
+    str20 = string[20];
+    
+    municipio = record
+        codLoc: str20;
+        codCepa: str20;
+        cantCasosAct: integer;
+        cantCasosNue: integer;
+        cantRecu: integer;
+        cantFalle: integer;
+    end;
+    
+    datos = record
+        codLoc: str20;
+        nomLoc: str20;
+        codCepa: str20;
+        nomCepa: str20;
+        cantCasosAct: integer;
+        cantCasosNue: integer;
+        cantRecu:integer;
+        cantFalle: integer;
+    end;
+    
+    detalle = file of municipio;
+    maestro = file of datos;
+
+procedure importar (var textoM: text; var det: detalle);
+var
+    m: municipio;
+begin
+    rewrite (det);                      //creo el archivo detalle
+    reset (textoM);                     //levanto el archivo de textoM
+    while (not eof (textoM)) do begin
+        readln (textoM, m.codLoc, m.codCepa, m.cantCasosAct, m.cantCasosNue, m.cantRecu, m.cantFalle); //leo el archivo de textoM
+        write (det, m);   //copio la info leida en el detalle
+    end;
+    close (textoM);                     //cierro el archivo de textoM
+    close (det),                        //cierro el archivo detalle
+end;
+
+procedure importarDetalles (var det1, det2: detalle);
+var
+    ruta: str20;
+    textoM: text;
+begin
+    //asigno todos los archivos
+    ruta:= "municipio.txt";
+    assign (textoM, ruta);
+    assign (det1,'det1');
+    assign (det2,'det2');
+    importar (textoM, det1);
+    importar (textoM, det2);
+end;
+
+procedure importarMaestro (var mae: maestro);
+var
+    ruta: str20;
+    d: datos;
+    textoMae: text;
+begin
+    ruta:= 'maestro.txt';
+    assign (textoMae, ruta);            //enlazo el archivo maestro que se dispone
+    assign (mae, 'mae1');               //enlazo el archivo maestro a crear
+    rewrite (mae);                      //creo el archivo maestro nuevo
+    reset (textoMae);                   //levanto el archivo de texto disponible
+    while (not eof (textoMae)) do begin
+        readln (textoMae, d.codLoc, d.nomLoc, d.codCepa, d.nomCepa, d.cantCasosAct, d.cantCasosNue, d.cantRecu, d.cantFalle); //leo los datos de archivo disponible
+        write (mae, d); //escribo los datos en el archivo nuevo
+    end;
+    close (mae);  //cierro el archivo maestro nuevo
+    close (textoMae);  //cierro el archivo de texto
+end;
+
+procedure actualizarMaestro (var mae: maestro; var det1, det2: detalle; var cantMasCincuenta: integer);
+var
+    regD1, regD2, min: municipio;
+    regM: datos;
+begin
+    //levanto todos los archivos
+    reset (det1);
+    reset (det2);
+    reset (mae);
+    //leo de todos los archivos detalle
+    leer (det1, regD1);
+    leer (det2, regD2);
+    minimo (regD1, regD2, min);
+    while (min.codLoc <> valor) do begin
+        read (mae, regM);               //leo de un registro del maestro
+        while (regM.codLoc <> min.codLoc) do  // si el codigo de maestro no coincide con el de minimo, leo otro maestro
+            read (mae, regM);
+        while (regM.codLoc = min.codLoc) do begin
+            regM.cantFalle:= regM.cantFalle + min.cantFalle;            //incremento los fallecidos
+            regM.cantRecu:= regM.cantRecu + min.cantRecu;               //incremento los recuperados
+            regM.cantCasosAct:=min.cantCasosAct;                        //actualizo los casos actuales
+            regM.cantCasosNue:= min.cantCasosNue;                       //actualizo los casos nuevos
+        end;
+        if (regM.cantCasosAct > 50) then
+            cantMasCincuenta:= cantMasCincuenta + 1;
+        seek (mae, filePos (mae) - 1);           //me posiciono en el registro anterior de mae para actualizar todos los datos
+        write (mae, regM);                       //ahora si actualizo el maestro
+    end;
+end;
+
+var
+    det1, det2: detalle;
+    mae: maestro;
+    cantMasCincuenta: integer;
+begin
+    cantMasCincuenta:= 0;
+    importarDetalles (det1, det2);
+    importarMaestro (mae);
+    actualizarMaestro (mae, det1, det2);
+    writeln (cantMasCincuenta);
+end.

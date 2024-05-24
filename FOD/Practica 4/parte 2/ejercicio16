@@ -1,0 +1,42 @@
+16) Dado el siguiente árbol B + de orden 4 y con política de resolución de underflows a
+derecha.Política derecha: se intenta redistribuir con el hermano adyacente derecho, si no es
+posible, se fusiona con hermano adyacente derecho.
+
+                    4: 0 (340) 1 (400) 2 (500) 3
+0: (11)(50)(77) 1   1: (340)(350)(360) 2   2: (402)(410)(420) 3    3: (520)(530) -1
+--------------------------------------------------------------------------------------------
++80
+                                               7: 4 (400) 6
+                    4: 0 (77) 5 (340) 1                            6:  2 (500) 3
+0: (11)(50) 5    5: (77)(80) 1   1: (340)(350)(360) 2   2: (402)(410)(420) 3    3: (520)(530) -1
+
+L4, L0, E5, E4, E6, E7
+
+Intento insertar el 80 en el nodo 0, lo que me produce overflow. Para resolverlo, creo el 
+nodo 5 con la segunda parte del nodo 0 y promociono la copia del 77, lo que a su vez, 
+tambien genera overflow en el nodo 4. Creo el nodo 6 tomando la segunda mitad del nodo
+4 y promociono una copia del 400 formando una nueva raiz de mi arbol
+--------------------------------------------------------------------------------------------
+-400
+
+                                               7: 4 (400) 6
+                    4: 0 (77) 5 (340) 1                            6:  2 (500) 3
+0: (11)(50) 5    5: (77)(80) 1   1: (340)(350)(360) 2   2: (402)(410)(420) 3    3: (520)(530) -1
+
+En este caso no podemos eliminar el 400 ya que es una copia y no es un elemento, para serlo 
+deberia estar en una hoja de nuestro arbol.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -46,7 +46,7 @@ por la clave mas chica del subarbol derecho.
 L7, L6, L4, L3, E6, E1, E2, E7
 
 Para eliminar el 48 debo fusionarlo con el nodo 6 y luego
-redistribuir todo el arbol derecho
+redistribuir todo el arbol derecho.
 
 
 

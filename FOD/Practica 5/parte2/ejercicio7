@@ -1,0 +1,89 @@
+7) Para las siguientes claves, realice el proceso de dispersión mediante el método de hashing
+extensible, sabiendo que cada nodo tiene capacidad para dos registros. El número natural
+indica el orden de llegada de las claves.  Se debe mostrar el estado del archivo para cada
+operación. Justifique brevemente ante colisión y desborde los pasos que realiza.
+------------------------------------------------------------------------------------------------
+1 Darin 00111111
+
+tabla de direccion                          cubetas en disco
+
+0                                           0
+    direccion                                   Darin
+------------------------------------------------------------------------------------------------
+2 Alterio 11110100
+
+tabla de direccion                          cubetas en disco
+
+0                                           0
+    direccion                                   Darin | Alterio
+
+Se agrega a Alterio sin problemas.
+------------------------------------------------------------------------------------------------
+3 Sbaraglia 10100101
+
+tabla de direccion                          cubetas en disco
+
+1                                           1
+ 0  direccion   --------------------- >         Sbaraglia | Alterio
+ 1   direccion  --------------------- 
+                                    -       1   
+                                    - >         Darin
+
+Al agregar a Sbaraglia se produce overflow en la cubeta de la direccion 0, por lo que se aumenta 
+el valor asociado a la tabla en 1 y al valor asociado a la cubeta que se saturo tambien en 1, 
+se genera otra cubeta y reacomoda a Sbaraglia en la cubeta de direccion 0 y a Darin en la cubeta 
+de direccion 1.
+------------------------------------------------------------------------------------------------
+4 De la Serna 01010111
+
+tabla de direccion                          cubetas en disco
+
+1                                           1
+ 0  direccion   --------------------- >         Sbaraglia | Alterio
+ 1   direccion  --------------------- 
+                                    -       1   
+                                    - >         Darin | De la Serna
+
+Se agrega a De la serna sin problemas.
+------------------------------------------------------------------------------------------------
+5 Altavista 01101011
+
+tabla de direccion                          cubetas en disco
+
+2                                           1
+ 00   direccion   --------------------- >       Alterio
+ 10   direccion   --------------------- 
+                                      -     2   
+                                      - >       
+                                            2
+ 01   direccion   --------------------- >       Sbaraglia | Altavista
+ 11   direccion   --------------------- >       Darin | De la Serna
+
+Al agregar a altavista se produce overflow en la cubeta de direccion 1, por lo que se aumenta el
+valor asociado a la tabla en 1 y el valor asociado a la cubeta que se saturo tambien en 1, se 
+duplica el espacio disponible y se genera otra cubeta. Se reacomodan las cubetas.
+------------------------------------------------------------------------------------------------
+6 Grandinetti 10101010
+
+tabla de direccion                          cubetas en disco
+
+2                                           1
+ 00   direccion   --------------------- >       Alterio
+ 10   direccion   --------------------- 
+                                      -     2   
+                                      - >       Grandinetti
+                                            2
+ 01   direccion   --------------------- >       Sbaraglia | Altavista
+ 11   direccion   --------------------- >       Darin | De la Serna
+
+ Agrego a Grandinetti sin problemas.
+
+
+
+
+
+
+
+
+
+

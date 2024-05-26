@@ -1,0 +1,28 @@
+1) Hashing es un tecnica que convierte la clave de un registro en un numero aleatorio, que luego sirve para determinar donde se almacena la clave.
+    La relacion que existe con los archivos es que permite dispersar las claves de los registros de un archivo para asi, facilitar la insercion y
+    eliminacion rapida de los registros.
+2) La funcion de dispersion es una caja negra que a partir de una clave genera la direccion fisica donde debe almacenarse un registro.              //Agregar las 3 funciones
+3)  Sinonimo: 
+    Colision: Situacion en la que un registro es asignado a una direccion que esta utilizada por otro registro.
+    Overflow: Situacion en la que un registro es asignado a una direccion que esta utilizada por otro registro y ademas no queda espacion para
+              este nuevo.
+4) Para disminuir el numero de colisiones se pueden utilizar las siguientes tecnicas:
+        - Esparcir los registros: buscar metodos que distribuyan los registros de la forma mas aleatoria posible.
+        - Usar memoria adicional: distribuir pocos registros en muchas direcciones, baja la densidad del empaquetamiento.
+                - desventajas: Desperdicia espacio.
+        - Colocar mas de un registro por direcccion: direcciones con N claves.
+5) La densidad de almacenamiento se refiere a la proporcion de espacio del archivo asignado que en realidad almacena registros. Una menor
+    densidad genera menos overflow, aunque desperdicia mas espacio.
+6) Tecnicas de hashing estatico:
+        - Saturacion progresiva: Cuando se completa un nodo, se busca el proximo hasta encontrar uno libre.
+        - Saturacion progresiva encadenada: La diferencia con la tecnica anterior es que los registros de saturacion se encadenan y no ocupan
+            necesariamente posiciones contiguas.
+        - Saturación progresiva encadenada con área de desborde separada: no utiliza nodos de direcciones para los overflows, estos van a nodos especiales.
+        - Dispercion doble: Es una solucion para almacenar los registros de overflow en zonas no relacionadas. A la llave cuyo hash genera overflow se le 
+            agrega una segunda funcion que produce un numero C que se le suma a la direccion original tantas veces como sea necesario hasta encontrar una 
+            direccion con espacio. 
+
+
+
+
+

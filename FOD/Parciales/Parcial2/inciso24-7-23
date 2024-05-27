@@ -1,0 +1,63 @@
+2) Arbol b+ de prden 4 con politica de resolucion de underflows a derecha.
+
+                  4: 0 (240) 1 (403) 2 (500) 3
+0: (3)(45)(60) 1  1: (240)(255)(360) 2  2: (409)(420) 3  3: (550) -1
+----------------------------------------------------------------------------------------
++58
+                             7: 4 (403) 6
+                  4: 0 (58)(240) 6  6: 1 (403) 2 (500) 3
+0: (3)(45) 5  5:(58)(60) 1  1: (240)(255)(360) 2  2: (409)(420) 3  3: (550) -1
+
+L4, L0, E5, L4, E4,E6, E7 
+
+Al intentar agregar el 58 se porduce overflow en el nodo 0, por lo que distribuyo 
+equitativamente creando el nodo 5 y promociono la menor clave del nodo 5. Al hacer esto, 
+se produce overflow en el nodo 4 asi que procedo a realizar la misma tecnica, creando 
+asi el nodo 6 y formandose una nueva raiz con el nodo 7.
+----------------------------------------------------------------------------------------
+-403
+                             7: 4 (403) 6
+                4: 0 (58)(240) 6  6: 1 (403) 2 (500) 3                                                                      // Duda para la resolucion 
+0: (3)(45) 5  5:(58)(60) 1  1: (240)(255)(360) 2  2: (409)(420) 3  3: (550) -1
+----------------------------------------------------------------------------------------
++260
+----------------------------------------------------------------------------------------
+-550
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

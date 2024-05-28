@@ -9,6 +9,7 @@ tabla de direccion                              cubetas en disco
 
 0                                               0
     direccion                                       Buenos Aires 
+(No es necesario evaluar ningun bit para insertar BS AS).
 ----------------------------------------------------------------------------------------------------------------------
 2 San Juan ....0100
 
@@ -81,7 +82,36 @@ Agrego San Luis sin problemas.
 
 Agrego Tucuman sin problemas.
 ----------------------------------------------------------------------------------------------------------------------
+7 Rio Negro ….0011
+
+2                                               2
+  00 direccion   --------------------- >            San Juan 
+
+  10 direccion   --------------------- >        2
+                                                    Entre Ríos | Corrientes
+  01 direccion   --------------------- 
+                                     -          1   
+                                     -              Buenos Aires | San Luis
+                                     - >        
+  11             --------------------- >        1
+                                                    Tucuman
+
+Al agregar Rio Negro a la cubeta 11, se produce una colision con un registro ya existente dentro de la cubeta.
 ----------------------------------------------------------------------------------------------------------------------
+8 Jujuy ….1111
+
+2                                               2
+  00 direccion   --------------------- >            San Juan 
+
+  10 direccion   --------------------- >        2
+                                                    Entre Ríos | Corrientes
+  01 direccion   --------------------- 
+                                     -          1   
+                                     -              Buenos Aires | San Luis
+                                     - >        
+  11             --------------------- >        1
+                                                    Tucuman
+
 ----------------------------------------------------------------------------------------------------------------------
 
 

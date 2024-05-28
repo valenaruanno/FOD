@@ -2,6 +2,11 @@
 cada registro tiene capacidad para dos claves. El número natural indica el orden de
 llegada de las mismas. Se debe mostrar el estado del archivo para cada operación.
 Justifique brevemente ante colisión y desborde los pasos que realiza.
+
+1 Buenos Aires ....1001 2 San Juan ....0100
+3 Entre Ríos ....1110 4 Corrientes ....0010
+5 San Luis ....0101 6 Tucumán ….0111
+7 Rio Negro ….0011 8 Jujuy ….1111
 ----------------------------------------------------------------------------------------------------------------------
 1 Buenos Aires ....1001
 
@@ -36,6 +41,7 @@ informacion.
 ----------------------------------------------------------------------------------------------------------------------
 4 Corrientes ....0010
 
+tabla de direccion                              cubetas en disco
 2                                               2
   00 direccion   --------------------- >            San Juan 
 
@@ -48,11 +54,12 @@ informacion.
   11             --------------------- >
   
 Al agregar Corrientes se produce overflow en la cubeta de la direccion 0, por lo que se procede a aumentar el numero
-relacionado a la tabla de direcciones y el de las cubetas en disco. Se debe generar otra cubeta y reacomodar la 
+relacionado a la tabla de direcciones y el de las cubetas en disco. Se deben duplicar las cubeta y reacomodar la 
 iformacion pertenecientes a las direcciones 00 y 01.
 ----------------------------------------------------------------------------------------------------------------------
 5 San Luis ....0101
 
+tabla de direccion                              cubetas en disco
 2                                               2
   00 direccion   --------------------- >            San Juan 
 
@@ -68,6 +75,7 @@ Agrego San Luis sin problemas.
 ----------------------------------------------------------------------------------------------------------------------
 6 Tucumán ….0111
 
+tabla de direccion                              cubetas en disco
 2                                               2
   00 direccion   --------------------- >            San Juan 
 
@@ -84,6 +92,7 @@ Agrego Tucuman sin problemas.
 ----------------------------------------------------------------------------------------------------------------------
 7 Rio Negro ….0011
 
+tabla de direccion                              cubetas en disco
 2                                               2
   00 direccion   --------------------- >            San Juan 
 
@@ -94,25 +103,31 @@ Agrego Tucuman sin problemas.
                                      -              Buenos Aires | San Luis
                                      - >        
   11             --------------------- >        1
-                                                    Tucuman
+                                                    Tucuman | Rio Negro
 
 Al agregar Rio Negro a la cubeta 11, se produce una colision con un registro ya existente dentro de la cubeta.
 ----------------------------------------------------------------------------------------------------------------------
 8 Jujuy ….1111
 
-2                                               2
-  00 direccion   --------------------- >            San Juan 
+tabla de direccion                              cubetas en disco
+2                                                2
+  000 direccion   --------------------- >            
+  100 direccion   --------------------- >        2
+                                                    San Juan
+  010 direccion   -----------------------          2         
+  110             --------------------- - >       
+                                      - >           Entre Ríos | Corrientes
+  001 direccion   ---------------------         2
+  101 direccion   ------------------- - >       
+                                    - >             San Luis | Buenos Aires
+  011 direccion   --------------------- >        3
+                                                    Rio Negro
+  111 direccion   --------------------- >        3
+                                                    Tucuman | Jujuy     
 
-  10 direccion   --------------------- >        2
-                                                    Entre Ríos | Corrientes
-  01 direccion   --------------------- 
-                                     -          1   
-                                     -              Buenos Aires | San Luis
-                                     - >        
-  11             --------------------- >        1
-                                                    Tucuman
-
-----------------------------------------------------------------------------------------------------------------------
+  Al intentar agregar Jujuy se produce un desborde en la cubeta de direccion 11, por lo que, procedo a aumentar
+  el numero asociado a la cubeta desbordada y a la tabla de direccion. Duplico las cubetas y reacomodo los 
+  registros dependiendo las direcciones.
 
 
 

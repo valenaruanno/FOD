@@ -1,0 +1,6 @@
+0 10 8 aruanno diego
+1 8 10 manzur abril 
+2 5 7 aruanno amparo 
+3 8 11 aruanno catalino 
+4 3 11 di masi carolina 
+5 10 8 aruanno valentin

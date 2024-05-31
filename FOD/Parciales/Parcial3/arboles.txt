@@ -1,0 +1,76 @@
+Arbol de orden 5 con politica izquierda                             
+                                    
+                                    
+                                    2: 0(200)3(600)1(900)5(1200)4                             
+0: 1h(20)           3: 2h(400)(500)          1: 2h(700)(800)   5: 2h(1000)(1100)     4: 4h(1400)(1600)(1800)(2000)
+------------------------------------------------------------------------------------------------------------------------------
+-20
+                                    2: 0(400)3(600)1(900)5(1200)4                             
+0: 1h(200)           3: 2h(500)          1: 2h(700)(800)   5: 2h(1000)(1100)     4: 4h(1400)(1600)(1800)(2000)
+
+L2, L0, L3, E0, E3, E2
+
+Al intentar eliminar el 20 me doy cuenta que el nodo 0 quedaria en underflow, por lo que, intento redistribuir con el hermano
+izquierdo lo cual no es posible y procedo a redistribuir con el hermano derecho. Para realizar esta operacion debo subir la
+clave menor del nodo 3 al nodo 2 y bajar al nodo 0 la menor clave del nodo padre.
+------------------------------------------------------------------------------------------------------------------------------
++2400
+                                                    8: 2 (900) 7
+                    2: 0(400)3(600)1                                            7: 5(1200)4(1800)6                     
+0: 1h(200)           3: 2h(500)          1: 2h(700)(800)   5: 2h(1000)(1100)     4: 4h(1400)(1600)      6: (2000)(2400)
+
+L2, L4, E4, E6, E2, E7, E8
+
+Al intentar agregar el 2400 en el nodo 4 se produce overflow por lo que divido el nodo creando el nodo 6 y almacenando la
+segunda parte de las claves del nodo 4 y promociono el 1800 hacia el padre, el cual tambien queda en overflow asi que procedo
+a realizar la misma tecnica de creacion de un nuevo nodo y division de las claves con el nodo 2. Para finalizar, promociono la
+menor clave del nodo 7, la cual sera la nueva raiz de nuestro arbol.
+------------------------------------------------------------------------------------------------------------------------------
+-200
+
+                                          8: 2 (900) 7
+                    2: 0(600)1                                      7: 5(1200)4(1800)6                     
+   0: 1h(400)(500)             1: 2h(700)(800)   5: 2h(1000)(1100)     4: 4h(1400)(1600)      6: (2000)(2400)
+
+L8, L2, L0, L3, E0, E3, E2
+
+Al eliminar el 200 debemos redistribuir con su nodo izquierdo por la politica, pero vemos que es el nodo de mas al costado.
+Tratamos de redistribuir con el derecho pero el mismo quedaria en underflow, por ende, debo fusionar todo el subarbol 
+derecho.
+------------------------------------------------------------------------------------------------------------------------------
+-1400
+
+                                          8: 2 (900) 7
+                    2: 0(600)1                                      7: 5(1200)4(1800)6                     
+   0: 1h(400)(500)             1: 2h(700)(800)   5: 2h(1000)(1100)     4: 4h(1600)      6: (2000)(2400)
+
+
+L8, L7, L4, E4
+
+La eliminacion se puede realizar sin problemas ya que no genera underflow en el nodo 4.
+------------------------------------------------------------------------------------------------------------------------------
+-1600
+
+                                          8: 2 (900) 7
+                    2: 0(600)1                                      7: 5(1100)4(1800)6                     
+   0: 1h(400)(500)             1: 2h(700)(800)   5: 2h(1000)     4: 4h(1200)(1600)      6: (2000)(2400)
+
+L8, L7, L4, L5, E5, E7, E4
+
+Al intentar realizar la eliminacion me doy cuenta que se produce underflow en el nodo 4, por lo que utilizando la politica de
+redistribucion dada, puedo resolver el problema redistribuyendo registros entre los nodos 4, 5 y 7.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

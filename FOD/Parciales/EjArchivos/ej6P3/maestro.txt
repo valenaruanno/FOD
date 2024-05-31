@@ -1,0 +1,18 @@
+0 zzz
+0 zzz
+0 zzz
+1 Estilo oversize
+20 rojo/negro/azul
+4000 remeras
+2 Estilo canelon
+10 negro/azul/blanco
+10000 camperas
+3 Estilo oversize
+15 negro/azul
+7000 jeans
+4 Estilo chupin
+20 rojo/negro/azul
+6000 pantalones
+5 Estilo ajustadas
+20 rojo/negro/azul/verde
+5000 chombas

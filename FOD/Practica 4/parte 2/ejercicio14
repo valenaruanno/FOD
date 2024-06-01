@@ -1,0 +1,72 @@
+14) Dado el siguiente árbol B de orden 6
+Política de resolución de underflows: izquierda o derecha.
+
+
+                                    2: 0 (216) 1 (460) 4 (570) 5 (689) 3 (777) 6
+0: (100)(159)(171)   1: (222)(256)(358)(380)(423)    4: (505)(522)    5: (586)(599)(615)(623)(680)   3: (703)(725)   6: (789)(915)(1000)
+------------------------------------------------------------------------------------------------------------------------------------------------------------
++300
+                                                            9: 2 (570) 8
+                    2: 0 (216) 1 (358) 7 (460) 4                                                8: 5 (689) 3 (777) 6
+0: (100)(159)(171)   1: (222)(256)(300)   7: (380)(423)    4: (505)(522)    5: (586)(599)(615)(623)(680)   3: (703)(725)   6: (789)(915)(1000)
+
+L2, L1, E1, E7, L2, E2, E8, E9
+
+Al insertar el 300 queda en overflow el nodo 1 y procedo a crear un nuevo nodo, almacenar la segunda parte del nodo 1 y promocionar la clave mas chica del
+nuevo nodo. Luego, se provoca overflow tambien en el nodo al cual promocionamos la clave antes mencionada, por lo que, realizo lo mismo que con el nodo 1 y 
+divido el nodo raiz creando uno nuevo donde almacenare la segunda parte de los registros del nodo raiz. Para finalizar, promociono la clave mas chica del nuevo 
+nodo generando asi, una nueva raiz para nuestro arbol.
+------------------------------------------------------------------------------------------------------------------------------------------------------------
++577
+
+                                                            9: 2 (570) 8
+                    2: 0 (216) 1 (358) 7 (460) 4                                               8: 5 (615) 10 (689) 3 (777) 6
+0: (100)(159)(171)   1: (222)(256)(300)   7: (380)(423)    4: (505)(522)    5: (577)(586)(599)  10:(623)(680)   3: (703)(725)   6: (789)(915)(1000)
+
+L9, L8, L5, E5, E10, E8
+
+Al insertar el 577 en el nodo 5 se produce overflow opr lo que se debe dividir el nodo creando uno nuevo con la segunda mita de las claves y promocionar la 
+menor clave del nodo nuevo hacia su padre. Al hacer esto, en el nodo padre se puede insertar sin problemas.
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+-586
+
+                                                            9: 2 (570) 8
+                    2: 0 (216) 1 (358) 7 (460) 4                                               8: 5 (615) 10 (689) 3 (777) 6                       
+0: (100)(159)(171)   1: (222)(256)(300)   7: (380)(423)    4: (505)(522)    5: (577)(599)  10:(623)(680)   3: (703)(725)   6: (789)(915)(1000)
+
+L9, L8, L5, E5
+
+Al eliminar del nodo 5 la clave 586 no se produce underflow y por lo tanto podemos eliminar sin problemas.
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+-570
+                                                            9: 2 (577) 8
+                    2: 0 (216) 1 (358) 7 (460) 4                                               8: 5 (689) 3 (777) 6                       
+0: (100)(159)(171)   1: (222)(256)(300)   7: (380)(423)    4: (505)(522)    5: (599)(615)(623)(680)   3: (703)(725)   6: (789)(915)(1000)                 PILA DE NODOS A RECUPERAR: 10
+
+L9, L8, L5, L10, E5, E10, E8, E9
+
+Al tartarse de una clave que no esta en un nodo hoja se intenta reemplazar con la menor clave de su subarbol derecho, pero esto no es posible ya que el nodo 
+5 quedaria en underflow y entonces debemos intentar redistribuir con sus hermanos adyacentes. Esto tampoco va a ser posible ya que quedaria el nodo 10 en 
+underflow asi que como ultima opcion nos queda fusionar el nodo 5 con el 10.
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+-380
+                                                        9: 2 (577) 8
+                2: 0 (216) 1 (300) 7 (460) 4                                               8: 5 (689) 3 (777) 6                       
+0: (100)(159)(171)   1: (222)(256)   7: (358)(423)    4: (505)(522)    5: (599)(615)(623)(680)   3: (703)(725)   6: (789)(915)(1000)                  PILA DE NODOS A RECUPERAR: 10
+
+L9, L2, L7, L1, E1, E7, E2
+
+Al intentar eliminar el 380 se produce underflow en el nodo por lo que recurrimos a redistribuir con el hermano adyacente izquierdo. Balanceamos la carga de
+los nodos.
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+-460
+
+                                                            9: 2 (577) 8
+                    2: 0 (216) 1 (300) 7                                                   8: 5 (689) 3 (777) 6                       
+0: (100)(159)(171)   1: (222)(256)   7: (358)(423)(460)(505)(522)         5: (599)(615)(623)(680)   3: (703)(725)   6: (789)(915)(1000)                  PILA DE NODOS A RECUPERAR: 4 | 10 
+
+L9, L2, L7, L4, E7, E4, E2
+
+Para eliminar el 460 debo redistribuir sus hijos de modo tal que quede el arbol balanceado. Para esto, se debe fusionar el nodo 4 y 7, y acomodar el nodo
+2.
+

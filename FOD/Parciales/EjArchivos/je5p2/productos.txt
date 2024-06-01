@@ -1,0 +1,12 @@
+1 arroz
+100 Producto alimenticio
+80 250
+2 fideos
+150 Producto alimenticio
+100 200
+3 atun
+300 Producto de pescaderia
+250 1000
+4 galletitas
+100 Producto merienda
+20 300

@@ -88,7 +88,7 @@ type
                 cant:= cant + min.cantVendida;
                 minimo (v, regV, min);
             end;
-            while (min.cod <> cod) do 
+            while (min.cod <> p.cod) do 
                 read (mae, p);
             p.stockDisp:= p.stockDisp - cant;
             if (p.stockDisp < p.stockMin) then 

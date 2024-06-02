@@ -1,0 +1,249 @@
+15)  construye el árbol B de orden 4: +65,
++89, +23, +45, +20, +96, +10, +55, -23, +110, +50, -10, +25, -50, -45, +120, +130, +70, +75,
++73, +100, -120, -110.
+Política de resolución de underflows: derecha.
+----------------------------------------------------------------------------------------------------------
++65
+                    0: (65)
+----------------------------------------------------------------------------------------------------------
++89
+
+                    0: (65)(89)
+
+L0, E0 
+
+Inserto el 89 en el nodo 0 sin problemas.
+----------------------------------------------------------------------------------------------------------
++23
+
+                    0: (23)(65)(89)
+
+L0, E0 
+
+Inserto el 89 en el nodo 0 sin problemas.
+----------------------------------------------------------------------------------------------------------
++45
+                          2: 0 (65) 1
+                    0: (23)(45)      1: (89)
+
+L0, E0, E1, E2
+
+Al insertar la clave 45 se produce overflow en el nodo 0, por lo que debo crear un nuevo nodo y almacenar 
+la segunda parte de las claves que tenia el nodo 0. Luego debo promocionar la clave mas chica del nuevo nodo,
+creando a su vez otro nodo, el cual sera la nueva rraiz de nuestro arbol.
+----------------------------------------------------------------------------------------------------------
++20
+
+                          2: 0 (65) 1
+                    0: (20)(23)(45)      1: (89)
+
+L2, L0, E0
+
+Inserto la clave 20 en el nodo 0 sin problemas.
+----------------------------------------------------------------------------------------------------------
++96
+
+                          2: 0 (65) 1
+                    0: (20)(23)(45)      1: (89)(96)
+
+L2, L1, E1
+
+Inserto la clave 96 en el nodo 1 sin problemas.
+----------------------------------------------------------------------------------------------------------
++10
+
+                            2: 0 (23) 3 (65) 1
+                    0: (10)(20)  3: (45)      1: (89)(96)
+
+  L2, L0, E0, E3, E2
+
+  Al intentar insertar la clave 10 en el nodo 0 se produce overflow, por lo que procedo a dividir el nodo
+  creando uno nuevo con la segunda parte de las claves del nodo dividido y promociono el registro mas chico
+  del nuevo nodo.
+----------------------------------------------------------------------------------------------------------
++55
+
+                              2: 0 (23) 3 (65) 1
+                    0: (10)(20)  3: (45)(55)      1: (89)(96)
+
+L2, L3, E3
+
+Inserto el 55 en el nodo 3 sin problemas.
+----------------------------------------------------------------------------------------------------------
+-23
+
+                              2: 0 (45) 3 (65) 1
+                    0: (10)(20)  3: (55)      1: (89)(96)
+
+L2, L3, E3, E2
+
+Para eliminar la clave 23, como no se encuentra en un nodo hoja la debo reemplazar con la menor clave del
+subarbol derecho.
+----------------------------------------------------------------------------------------------------------
++110
+
+                              2: 0 (45) 3 (65) 1
+                    0: (10)(20)  3: (55)      1: (89)(96)(110)
+
+ L2, L1, E1                   
+
+Inserto la clave 110 en el nodo 1 sin problemas.
+----------------------------------------------------------------------------------------------------------
++50
+
+                              2: 0 (45) 3 (65) 1
+                    0: (10)(20)  3: (50)(55)      1: (89)(96)(110)
+
+L2, L3, E3
+
+Inserto la clave 50 sin provocar overflow.
+----------------------------------------------------------------------------------------------------------
+-10
+
+                              2: 0 (45) 3 (65) 1
+                    0: (20)  3: (50)(55)      1: (89)(96)(110)
+
+L2, L0, E0
+
+Elimino el 10 del nodo 0 sin provocar underflow.
+----------------------------------------------------------------------------------------------------------
++25
+
+                              2: 0 (45) 3 (65) 1
+                    0: (20)(25) 3: (50)(55)      1: (89)(96)(110)
+
+L2, L0, E0
+
+Inserto el 25 en el nodo 0 sin provocar overflow.
+----------------------------------------------------------------------------------------------------------
+-50
+
+                              2: 0 (45) 3 (65) 1
+                    0: (20)(25) 3: (55)      1: (89)(96)(110)
+
+L2, L3, E3
+
+Elimino el 50 que se encuentra en una hoja sin provocar underflow.
+----------------------------------------------------------------------------------------------------------
+-45
+
+                              2: 0 (65) 1
+                    0: (20)(25)(55)      1: (89)(96)(110)                                        PILA NODOS ELIMINADOS: 3
+
+L2, L3, L0, E0, E3, E2
+
+La clave 45 se encuentra en un nodo hoja, entonces intento intercambiarlo con la menor clave de su subarbol
+derecho, pero al intentar hacerlo me doy cuenta que este quedaria en underflow. Para solucionar esto debo 
+fusionar el nodo 3 y 0, eliminar la clave 45 del nodo 2 y volver a hacer el enlace entre la clave 65 y el
+nodo 0.
+----------------------------------------------------------------------------------------------------------
++120
+
+                              2: 0 (65) 1 (110) 3
+              0: (20)(25)(55)      1: (89)(96)      3:(120)                                        PILA NODOS ELIMINADOS: 
+
+L2, L1, E1, E3, E2                     
+
+Al querer agregar la clave 120 se produce overflow en el nodo 1, por lo que procedo a dividirlo creando un
+nuevo nodo con la segunda parte de las claves del nodo 1. Luego debo promocionar la menor clave del nuevo 
+nodo hacia el padre.
+----------------------------------------------------------------------------------------------------------
++130
+
+                              2: 0 (65) 1 (110) 3
+              0: (20)(25)(55)      1: (89)(96)      3:(120)(130)                                       PILA NODOS ELIMINADOS: 
+
+L2, L3, E3              
+
+Inserto el 130 en el nodo 3 sin problemas.
+----------------------------------------------------------------------------------------------------------
++70
+
+                              2: 0 (65) 1 (110) 3
+              0: (20)(25)(55)      1: (70)(89)(96)      3:(120)(130)                                       PILA NODOS ELIMINADOS: 
+
+L2, L1, E1
+
+Inserto el 70 en el nodo 1 sin problemas.
+----------------------------------------------------------------------------------------------------------
++75
+
+                              2: 0 (65) 1 (89) 4 (110) 3
+              0: (20)(25)(55)      1: (70)(75)    4:(96)      3:(120)(130)                                       PILA NODOS ELIMINADOS: 
+
+L2, L1, E1, E4, E2
+
+Intento insertar el 75 en el nodo 1 y se produce overflow. Procedo a dividir el mismo creando un nuevo 
+nodo con la segunda parte de las claves del nodo 1 y promociono el menor registro del nuevo nodo hacia la
+raiz.
+----------------------------------------------------------------------------------------------------------
++73
+
+                            2: 0 (65) 1 (89) 4 (110) 3
+           0: (20)(25)(55)      1: (70)(73)(75)    4:(96)      3:(120)(130)                                       PILA NODOS ELIMINADOS:
+
+L2, L1, E1
+
+Inserto la clave 73 en el nodo 1 sin provocar overflow.
+----------------------------------------------------------------------------------------------------------
++100
+
+                        2: 0 (65) 1 (89) 4 (110) 3
+      0: (20)(25)(55)      1: (70)(73)(75)    4:(96)(100)      3:(120)(130)                                       PILA NODOS ELIMINADOS:
+
+L2, L4, E4
+
+Inserto la clave 100 en el nodo 4 sin problemas.
+----------------------------------------------------------------------------------------------------------
+-120
+
+                        2: 0 (65) 1 (89) 4 (110) 3
+      0: (20)(25)(55)      1: (70)(73)(75)    4:(96)(100)      3:(130)                                       PILA NODOS ELIMINADOS:
+
+L2, L3, E3
+
+Elimino la clave 120 del nodo 3 sin generar underflow.
+----------------------------------------------------------------------------------------------------------
+-110
+
+                        2: 0 (65) 1 (89) 4 
+      0: (20)(25)(55)      1: (70)(73)(75)    4:(96)(100)(130)                                       PILA NODOS ELIMINADOS: 3
+
+L2, L3, L4, E4, E3, E2
+
+Al intentar eliminar la clave 110, no puedo reemplazar la clavee por la menor del subarbol derecho ya  que
+dejaria en underflow el nodo 3. Para completar el proceso debo fusionar el nodo 3 y el 4, y luego eliminar 
+el registro 110 del nodo padre reordenando los enlaces.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

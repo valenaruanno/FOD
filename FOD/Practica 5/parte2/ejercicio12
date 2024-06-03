@@ -1,0 +1,156 @@
+Realice el proceso de dispersión mediante el método de hashing extensible, sabiendo
+que cada nodo tiene capacidad para dos claves. El número natural indica el orden de
+llegada de las mismas. Deberá explicar los pasos que realiza en cada operación y
+dibujar los estados sucesivos correspondientes (inclusive el estado inicial).
+
+1 Aconcagua 10100111 2 Kilimanjaro 10101010
+3 Mont Blanc 00111110 4 Cervino 01101111
+5 Etna 00110101 6 Chañi 11110000
+7 Cho Oyu 01011101 8 Vinicunca 01011011
+9 Manaslu 00110100 10 Monte Tai 11100011
+--------------------------------------------------------------------------------------------
+tabla en memoria                                nodos en disco
+0                                               0
+    direccion                                       ()()
+--------------------------------------------------------------------------------------------
+1 Aconcagua 10100111
+
+tabla en memoria                                nodos en disco
+0                                               0
+    direccion                                       Aconcagua 
+
+No utilizo ningun bit para dispersar a aconcagua, entonces lo inserto en el unico nodo
+disponible.
+--------------------------------------------------------------------------------------------
+2 Kilimanjaro 10101010
+
+tabla en memoria                                nodos en disco
+0                                               0
+    direccion                                       Aconcagua | Kilimanjaro
+
+No utilizo ningun bit para dispersar a Kilimanjaro, entonces lo inserto en el unico nodo 
+disponible. Se produce colision en el mismo.
+--------------------------------------------------------------------------------------------
+3 Mont Blanc 00111110
+
+tabla en memoria                                nodos en disco
+1                                               1
+    direccion 0                                     Mont Blanc | Kilimanjaro
+                                                1
+    "       " 1                                     Aconcagua
+    
+No utilizo ningun bit para dispersar a Mont Blanc, entonces lo inserto en el unico nodo
+disponile pero me doy cuenta que el mismo se encuentra saturado por lo que le aumento el valor
+asociado al nodo y creo otro nodo con el mismo valor. A comparar ese numero con el asociado al
+numero en la tabla, el ultimo es menor lo que significa que no hay entradas suficientes para 
+direccionar la cantida de nodos, asi que lo debo aumentar y duplicar la cantidad de celdas.
+Por ultimo, redirecciono las claves teniendo en cuenta el bit menos significativo.
+--------------------------------------------------------------------------------------------
+4 Cervino 01101111
+
+tabla en memoria                                nodos en disco
+1                                               1
+    direccion 0                                     Mont Blanc | Kilimanjaro
+                                                1
+    "       " 1                                     Aconcagua  | Cervino
+
+Utilizo el bit menos significativo para dispersar a Cervino, entonces lo inserto en el 
+nodo direccionado por la clave 1. Esta insersion produce colision.
+--------------------------------------------------------------------------------------------
+5 Etna 00110101
+
+tabla en memoria                                nodos en disco
+2                                               
+    direccion 00 ---------------------------    1                               
+                                           -->      Mont Blanc | Kilimanjaro
+    "       " 10 ---------------------------                                    
+                                                2
+    "       " 01                                    Etna
+                                                2
+    "       " 11                                    Cervino | Aconcagua
+
+
+--------------------------------------------------------------------------------------------
+6 Chañi 11110000
+
+tabla en memoria                                nodos en disco
+2                                               2
+    direccion 00                                    Chañi                               
+                                                2
+    "       " 10                                    Mont Blanc | Kilimanjaro                               
+                                                2
+    "       " 01                                    Etna
+                                                2
+    "       " 11                                    Cervino | Aconcagua
+--------------------------------------------------------------------------------------------
+7 Cho Oyu 01011101
+
+tabla en memoria                                nodos en disco
+2                                               2
+    direccion 00                                    Chañi                               
+                                                2
+    "       " 10                                    Mont Blanc | Kilimanjaro                               
+                                                2
+    "       " 01                                    Etna | Cho Oyu
+                                                2
+    "       " 11                                    Cervino | Aconcagua
+--------------------------------------------------------------------------------------------
+8 Vinicunca 01011011
+
+tabla en memoria                                nodos en disco
+3                                               
+    direccion 000 --------------------------    2                                                           
+                                          -->       Chañi
+    "       " 100 --------------------------                                                                  
+                                                
+    "       " 010 --------------------------    2                               
+                                          -->       Mont Blanc | Kilimanjaro
+    "       " 110 --------------------------                                   
+                                                            
+    "       " 001 --------------------------    2
+                                          -->       Cho Oyu | Etna                 
+    "       " 101 -------------------------- 
+                                                3                   
+    "       " 011                                   Vinicunca
+                                                3
+    "       " 111                                   Cervino | Aconcagua
+--------------------------------------------------------------------------------------------
+9 Manaslu 00110100
+
+tabla en memoria                                nodos en disco
+3                                               
+    direccion 000 --------------------------    2                                                           
+                                          -->       Chañi | Manaslu
+    "       " 100 --------------------------                                                                  
+                                                
+    "       " 010 --------------------------    2                               
+                                          -->       Mont Blanc | Kilimanjaro
+    "       " 110 --------------------------                                   
+                                                            
+    "       " 001 --------------------------    2
+                                          -->       Cho Oyu | Etna                 
+    "       " 101 -------------------------- 
+                                                3                   
+    "       " 011                                   Vinicunca
+                                                3
+    "       " 111                                   Cervino | Aconcagua    
+--------------------------------------------------------------------------------------------
+10 Monte Tai 11100011
+
+tabla en memoria                                nodos en disco
+3                                               
+    direccion 000 --------------------------    2                                                           
+                                          -->       Chañi | Manaslu
+    "       " 100 --------------------------                                                                  
+                                                
+    "       " 010 --------------------------    2                               
+                                          -->       Mont Blanc | Kilimanjaro
+    "       " 110 --------------------------                                   
+                                                            
+    "       " 001 --------------------------    2
+                                          -->       Cho Oyu | Etna                 
+    "       " 101 -------------------------- 
+                                                3                   
+    "       " 011                                   Vinicunca | Monte Tai
+                                                3
+    "       " 111                                   Cervino | Aconcagua

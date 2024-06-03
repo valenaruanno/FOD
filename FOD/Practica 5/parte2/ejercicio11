@@ -1,0 +1,105 @@
+Para las siguientes claves, realice el proceso de dispersión mediante el método de
+hashing extensible, sabiendo que cada nodo tiene capacidad para dos registros. El
+número natural indica el orden de llegada de las claves.  Se debe mostrar el estado del
+archivo para cada operación. Justifique brevemente ante colisión y desborde los pasos
+que realiza.
+
+1 Verón 01100010 4 Sosa 10001000
+2 Braña 01010111 5 Pavone 11110101
+3 Calderón 00110100 6 Andújar 00101001
+-------------------------------------------------------------------------------------------------
+
+tabla en memoria                        nodos en disco
+0                                       0
+    direccion                               ()()
+
+-------------------------------------------------------------------------------------------------
+1 Verón 01100010
+
+tabla en memoria                        nodos en disco
+0                                       0
+    direccion                               Verón
+
+No se utiliza ningun bit para dispersar a Verón, entonces lo insertamos en el unico nodo.
+-------------------------------------------------------------------------------------------------
+2 Braña 01010111
+
+tabla en memoria                        nodos en disco
+0                                       0
+    direccion                               Verón | Braña
+
+No se utiliza ningun bit para dispersar a Braña, entonces lo insertamos en el unico nodo posible.
+Al no estar vacio, se produce colision.
+-------------------------------------------------------------------------------------------------
+3 Calderón 00110100
+
+tabla en memoria                        nodos en disco
+1                                       1
+    direccion 0                              Verón | Calderón
+                                        1
+    direccion 1                             Braña
+
+No utilizo bits para dispersar a Calderón, entonces debo insertarlo en el unico nodo, pero el mismo
+no tiene mas capacidad por lo que le aumento el valor asociado al nodo y creo uno nuevo con el 
+mismo valor asociado. Al comparar el numero asociado al nodo saturado con el numero asociado a la
+tabla, me doy cuenta que no tengo suficientes entradas para direccionar la cantidad de nodos.
+Procedo a aumentar el numero asociado a la tabla y duplicar la misma. Por ultimo vuelvo a 
+redistribuir las claves teniendo en cuenta el bit menos significativo.
+-------------------------------------------------------------------------------------------------
+4 Sosa 10001000
+
+tabla en memoria                        nodos en disco
+2                                       2
+    direccion 00                              Sosa | Calderón
+                                        2
+    "       " 10                              Verón
+                                        1
+    "       " 01 ------------------
+                                  -->         Braña
+    "       " 11 ------------------
+
+Utilizo un solo bit para distribuir Sosa, entonces intento insertarlo en el nodo direccionado por 
+la celda 1, pero no se puede realizar porque se produce overflow. Para solucionar este problema,
+aumento el valor asociado al nodo saturado y creo un nuevo nodo con el mismo valor asociado. Al
+comparar este numero con el valor asociado a la tabla, el segundo es menor lo que nos da la pauta de
+que la cantidad de entradas nmo es suficiente para direccionar la cantida de nodos y debo duplicar
+la tabla. Por ultimo, procedo a redistribuir todas las claves ahora teniendo en cuenta los ultimos 
+dos bits menos significativos.
+-------------------------------------------------------------------------------------------------
+5 Pavone 11110101
+
+tabla en memoria                        nodos en disco
+2                                       2
+    direccion 00                              Sosa | Calderón
+                                        2
+    "       " 10                              Verón
+                                        1
+    "       " 01 ------------------
+                                  -->         Braña | Pavone
+    "       " 11 ------------------
+
+Utilizo dos bits para dispersar a Pavone, entonces debo insertarlo en el nodo direccionado por las
+celdas 01 y 11. Al insertarlo se produce colision.
+-------------------------------------------------------------------------------------------------
+6 Andújar 00101001
+
+tabla en memoria                        nodos en disco
+2                                       2
+    direccion 00                            Sosa | Calderón
+                                        2
+    "       " 10                            Verón
+                                        2
+    "       " 01                            Pavone | Andujar   
+                                        2      
+    "       " 11                            Braña
+
+Utilizo dos bits para dispersar la clave de Andujar, entonces debo insertarla en el nodo direccionado
+por las celdas 01 y 11, pero se produce overflow en el nodo. Parasolucionarlo, aumento en uno el valor
+asociado al nodo saturado y creo un nuevo nodo con el mismo valor. Al comparar este numero con el valor
+asociado a la tabla, me doy cuenta que no debo duplicar las celdas porque dispongo de la suficiente
+cantidad de entradas como para direccionar todos los nodos. Procedo a redistribuir las claves.
+
+
+
+
+

@@ -1,0 +1,107 @@
+Para las siguientes claves, realice el proceso de dispersión mediante el método de
+hashing extensible, sabiendo que cada nodo tiene capacidad para dos registros. El
+número natural indica el orden de llegada de las claves.  Se debe mostrar el estado del
+archivo para cada operación. Justifique brevemente ante colisión y desborde los pasos
+que realiza.
+1 Guillermo.B 01100011      4 Gomez 00000001
+2 Gustavo.B 01010110        5 Sosa 11110100
+3 Enria 00110101            6 Guli 00101000
+-------------------------------------------------------------------------------------------------------
+tabla en memoria                        nodos en disco
+0                                       0
+    direccion                               ()()
+-------------------------------------------------------------------------------------------------------
+1 Guillermo.B 01100011 
+
+tabla en memoria                        nodos en disco
+0                                       0
+    direccion                               Guillermo.B
+
+No se utiliza ningun bit para dispersar a Guillermo.B, entonces se lo inserta en el unico nodo 
+disponible.
+-------------------------------------------------------------------------------------------------------
+2 Gustavo.B 01010110
+
+tabla en memoria                        nodos en disco
+0                                       0
+    direccion                               Guillermo.B | Gustavo.B
+
+No se utiliza ningun bit para dispersar e Gustavo.B, entonces se lo inserta en el unico nodo 
+disponible. Se produce colision en el nodo.
+-------------------------------------------------------------------------------------------------------
+3 Enria 00110101
+
+tabla en memoria                        nodos en disco
+1                                       1
+    direccion 0                             Gustavo.B
+                                        1
+    "       " 1                             Guillermo. B | Enria 
+
+No se utiliza ningun bit para dispersar a Enria, entonces se inserta en el unico nodo existente, pero 
+se produce overflow en el mismo, por lo que e procede a aumentarle el numero asociado al nodo y crear
+otro nodo con el mismo numero asociado. Cuando se compara el numero asociado del nodo saturado con
+el numero asociado a la tabla de memoria nos damos cuenta que el segundo es mas chico, lo que significa
+que no se dispone la cantidad de entradas necesarias para direccionar la cantidad de nodos. Se 
+procede a aumentar el numero asociado a la tabla en memoria y duplicar la misma. Por ultimo, debemos 
+redistribuir los nodos teniendo en cuenta el bit menos significativo.
+-------------------------------------------------------------------------------------------------------
+4 Gomez 00000001
+
+tabla en memoria                        nodos en disco
+2                                       
+    direccion 00  ------------------    1                       
+                                   -->      Gustavo.B
+    "       " 10  ------------------                        
+                                        2
+    "       " 01                            Gomez | Enria
+                                        2
+    "       " 11                            Guillermo. B
+
+Se utiliza un bit para dispersar a Gomez, entones se insertaria en el nodo direccionado por la celda 1.
+El mismo se encuentra colmado, por lo que se procede a aumentar el numero asociado al nodo y crear uno
+nuevo con el mismo numero asociado. Cuando comparamos este ultimo con el numero asociado a la tabla en
+memoria nos damos cuenta que el segunda es mas chico lo que significa que no se dispone de entradsa 
+necesarias para direccionar la cantida de nodos que se posee. Se procede a aumentar el numero asociado
+a la tabla de memoria y duplicar la cantidad de celdas. Por ultimo redistribuimos las claves.
+-------------------------------------------------------------------------------------------------------- 
+5 Sosa 11110100
+
+tabla en memoria                        nodos en disco
+2                                       
+    direccion 00  ------------------    1                       
+                                   -->      Gustavo.B | Sosa
+    "       " 10  ------------------                        
+                                        2
+    "       " 01                            Gomez | Enria
+                                        2
+    "       " 11                            Guillermo. B
+
+Tomamos 2 bits para dispersar a Sosa y lo insertamos en el nodo direccionado por la celda 00 y 10.
+Se produce colision en el nodo.
+--------------------------------------------------------------------------------------------------------
+6 Guli 00101000
+
+tabla en memoria                        nodos en disco
+2                                       2
+    direccion 00                            Sosa | Guli                  
+                                        2 
+    "       " 10                            Gustavo.B                   
+                                        2
+    "       " 01                            Gomez | Enria
+                                        2
+    "       " 11                            Guillermo. B
+
+Utilizamos dos bits para direccionar a Guli, entonces lo insertamos en el nodo direccionado por las 
+celdas 00 y 10. Al insertarlo se produce overflow, por lo que le aumentamos el numero asociado al nodo y
+creamos un nodo nuevo con el mismo numero asociado. Cuando comparamos el numero asociado a la tabla con el
+numero asociado al nodo saturado vemos que son iguales por lo que no es necesario duplicar la tabla y nos
+alcanzan la cantidad de entradas para direccionar los nodos disponibles. Redispersamos las claves.
+
+
+
+
+
+
+
+
+

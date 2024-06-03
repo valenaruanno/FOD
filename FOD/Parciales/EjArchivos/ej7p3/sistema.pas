@@ -95,7 +95,7 @@ type
                 act.codCepa:= min.codCepa;
                 act.recuperados:= 0;
                 act.fallecidos:= 0;
-                while ((min.codLoc = codLocAct) and (min.codCepa = act.codCepa)) do begin
+                while ((min.codLoc = act.codLoc) and (min.codCepa = act.codCepa)) do begin
                     act.activos:= min.activos;
                     act.nuevos:= min.nuevos;
                     act.recuperados:= act.recuperados + min.recuperados;
@@ -104,7 +104,7 @@ type
                 end;
                 while ((m.codLoc <> act.codLoc)and (m.codCepa <> act.codCepa)) do begin
                     read (mae, m);
-                    if ((m.codLoc <> min.codLoc) and (m.activos > 50)) then
+                    if ((m.codLoc <> act.codLoc) and (m.activos > 50)) then
                         writeln ('La localidad ',m.nombreLoc,' tiene un total de ',m.activos,' casos activos.');
                 end;
                 act.nombreLoc:= m.nombreLoc;

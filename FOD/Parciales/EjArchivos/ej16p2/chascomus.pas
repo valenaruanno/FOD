@@ -49,7 +49,7 @@ type
         pos, i: integer;
     begin
         for i:= 1 to dimF do begin
-            if (vecRD[i] < min) then begin
+            if (vecRD[i].cod < min.cod) then begin
                 min:= vecRD[i];
                 pos:= i;
             end;
